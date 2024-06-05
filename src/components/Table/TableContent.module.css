@@ -1,0 +1,71 @@
+.wrapper {
+  height: 100vh;
+  position: relative;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.table {
+  width: 500px;
+  table-layout: fixed;
+}
+
+.row:nth-of-type(even) {
+  background-color: rgb(241 242 244);
+}
+
+.table_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table_cell_header {
+  overflow: hidden;
+}
+
+.table_header_row {
+  border-bottom: 3px solid rgb(179, 185, 196);
+}
+
+.action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.table_cell {
+  min-width: 200px;
+  border-left: 1px solid rgb(220, 223, 228);
+}
+
+.table_cell_action,
+.table_header_action {
+  position: sticky;
+  right: 0;
+  border-left: 1px solid rgb(220, 223, 228);
+  background-color: #fff;
+}
+
+.table_cell_action {
+  border-left: 2px solid rgb(133, 144, 162);
+  /* background-color: #fff; */
+}
+
+.table_cell:first-child {
+  border-left: none;
+}
+
+.update_btn,
+.delete_btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transition: background-color 0.15s;
+}
+
+.update_btn:hover,
+.delete_btn:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}

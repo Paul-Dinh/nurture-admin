@@ -1,0 +1,27 @@
+.btns {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.heading {
+  font-size: 20px;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: -0.41px;
+  font-weight: 700;
+}
+
+.description {
+  color: rgb(84, 84, 84);
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.btn {
+  width: 48%;
+}
+
+.btn__cancel {
+  text-transform: capitalize;
+}

@@ -1,0 +1,45 @@
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 14px 30px 6px;
+}
+
+.input__text {
+  margin: 0 30px;
+  height: 48px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #b6b6b6;
+  padding: 0 16px;
+}
+
+.input__text:hover,
+.input__text:focus {
+  border: 1px solid #70ba2b;
+}
+
+.btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn__login {
+  width: 150px;
+  height: 32px;
+  color: #fff;
+  background-color: rgb(57, 0, 153);
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: 0.25s linear;
+  margin: 20px 30px;
+}
+
+.btn__login:hover {
+  background-color: rgb(16, 37, 63);
+}
