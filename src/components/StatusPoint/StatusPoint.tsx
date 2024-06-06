@@ -5,8 +5,18 @@ const StatusPoint = styled.div<{ status: string }>`
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: ${(props) =>
-    props.status === 'Hide' ? 'rgb(133, 144, 162)' : 'rgb(112, 186, 43)'};
+  background-color: ${({ status }) => {
+    const hideStatuses = ['Hide', 'Unpublished', 'Inactive'];
+    const showStatuses = ['Show', 'Active', 'Published'];
+
+    if (hideStatuses.includes(status)) {
+      return 'rgb(133, 144, 162)';
+    } else if (showStatuses.includes(status)) {
+      return 'rgb(112, 186, 43)';
+    } else {
+      return 'transparent';
+    }
+  }};
   margin-right: 5px;
 `;
 

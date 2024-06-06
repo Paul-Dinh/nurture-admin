@@ -3,11 +3,17 @@
   position: relative;
   overflow: auto;
   white-space: nowrap;
+  padding: 16px;
+  background-color: rgb(247, 248, 249);
 }
 
 .table {
   width: 500px;
   table-layout: fixed;
+}
+
+.row:nth-of-type(odd) {
+  background-color: #fff;
 }
 
 .row:nth-of-type(even) {

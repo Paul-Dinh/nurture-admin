@@ -1,72 +1,148 @@
-import { useForm } from "react-hook-form";
-import styles from "./LoginForm.module.css";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import {
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+} from '@mui/material';
+import axios from 'axios';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import styles from './LoginForm.module.css';
 
 LoginForm.propTypes = {};
 
 function LoginForm() {
+  const navigate = useNavigate();
+  const schema = yup
+    .object({
+      username: yup.string().required('This field is required.'),
+      password: yup.string().required('This field is required.'),
+    })
+    .required();
+
   const {
     register,
     handleSubmit,
-    // formState: { errors },
-  } = useForm();
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  // const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+  const handleSubmitOnclick = (data: { username: string; password: string }) => {
+    axios
+      .post('https://dev-api.nurture.vinova.sg/api/v1/admins/auth/login', {
+        username: data.username,
+        password: data.password,
+      })
+      .then(function (response) {
+        return response.data.data.tokens.accessToken;
+      })
+      .then((accessToken) => {
+        localStorage.setItem('accessToken', accessToken);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
-  // const handleMouseDownPassword = (
-  //   event: React.MouseEvent<HTMLButtonElement>
-  // ) => {
-  //   event.preventDefault();
-  // };
+    navigate('staticcontent');
+    reset();
+  };
 
   return (
     <form
       className={styles.form}
-      onSubmit={handleSubmit((data) => console.log(data))}
+      onSubmit={handleSubmit(handleSubmitOnclick)}
     >
-      <label className={styles.label}>Username or email</label>
-      <input
-        {...register("username")}
-        className={styles.input__text}
-        placeholder="Username or email"
-        type="text"
-      />
-      {/* <TextField
-        // className={styles.input__text}
+      <FormLabel
+        sx={{ margin: '14px 42px 6px', color: '#000', fontSize: '14px' }}
+        error={!!errors.username}
+      >
+        Username or email
+      </FormLabel>
+      <TextField
+        {...register('username')}
         id='outlined-basic'
         variant='outlined'
-        error
-      /> */}
-      <label className={styles.label}>Password</label>
-      <input
-        {...register("password")}
-        className={styles.input__text}
-        placeholder="Password"
-        type="password"
+        placeholder='Username or email'
+        sx={{
+          margin: '0 42px',
+          '& div': { borderRadius: '5px' },
+          '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#70ba2b',
+          },
+          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: '1px solid #70ba2b',
+          },
+          '.MuiOutlinedInput-root': { height: '48px' },
+          '& input': { padding: '12px 14px' },
+        }}
+        error={!!errors.username}
+        helperText={errors.username && errors.username?.message}
       />
-      {/* <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+
+      <FormLabel
+        sx={{ margin: '14px 42px 6px', color: '#000', fontSize: '14px' }}
+        error={!!errors.password}
+      >
+        Password
+      </FormLabel>
+      <FormControl
+        sx={{
+          margin: '0 42px',
+          '& div': { borderRadius: '5px' },
+          '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#70ba2b',
+          },
+          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: '1px solid #70ba2b',
+          },
+          '.MuiOutlinedInput-root': { height: '48px' },
+          '& input': { padding: '12px 14px' },
+        }}
+        variant='outlined'
+      >
         <OutlinedInput
-          id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
+          {...register('password')}
+          placeholder='Password'
+          id='outlined-adornment-password'
+          type={showPassword ? 'text' : 'password'}
+          error={!!errors.password}
           endAdornment={
-            <InputAdornment position="end">
+            <InputAdornment position='end'>
               <IconButton
-                aria-label="toggle password visibility"
+                aria-label='toggle password visibility'
                 onClick={handleClickShowPassword}
                 onMouseDown={handleMouseDownPassword}
-                edge="end"
+                edge='end'
               >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
+                {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </InputAdornment>
           }
-          label="Password"
         />
-      </FormControl> */}
+        <FormHelperText error={!!errors.password}>
+          {errors.password && errors.password?.message}
+        </FormHelperText>
+      </FormControl>
       <div className={styles.btn}>
-        <button type="submit" className={styles.btn__login}>
+        <button
+          type='submit'
+          className={styles.btn__login}
+        >
           Login
         </button>
       </div>

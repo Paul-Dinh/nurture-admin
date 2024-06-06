@@ -10,7 +10,7 @@
 
 .input__text {
   margin: 0 30px;
-  height: 48px;
+  /* height: 48px; */
   border-radius: 5px;
   outline: none;
   border: 1px solid #b6b6b6;

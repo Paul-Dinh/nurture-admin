@@ -1,13 +1,20 @@
 import { Box, Button, Modal } from '@mui/material';
-import React, { useState } from 'react';
 import styles from './DeleteForm.module.css';
 
 DeleteForm.propTypes = {};
 
-function DeleteForm({ isOpen, index }: { isOpen: boolean; index: number }) {
-  console.log(isOpen, index);
+function DeleteForm({
+  isOpen,
+  setOpen,
+  handleDeleteConfirm,
+}: {
+  isOpen: boolean;
+  setOpen: (open: boolean) => void;
+  index: number;
+  handleDeleteConfirm: () => void;
+}) {
   const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -16,19 +23,18 @@ function DeleteForm({ isOpen, index }: { isOpen: boolean; index: number }) {
     border: 'none',
     boxShadow: 24,
     p: 4,
-    borderRadius: 4,
+    borderRadius: 1,
   };
 
-  const [open, setOpen] = useState(isOpen);
-  console.log(open);
-  //   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleDeleteClick = () => {
+    handleDeleteConfirm();
+  };
 
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
@@ -82,6 +88,7 @@ function DeleteForm({ isOpen, index }: { isOpen: boolean; index: number }) {
               variant='contained'
               className={styles.btn}
               color='error'
+              onClick={handleDeleteClick}
             >
               Delete
             </Button>
