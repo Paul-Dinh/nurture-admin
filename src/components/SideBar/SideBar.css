@@ -1,0 +1,41 @@
+.search{
+    display: flex;
+    position: center;
+}
+
+.searchbar{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.search-filter{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.filter{
+    margin-left: 8px;
+    height: 44px;
+    background-color: rgb(241, 241, 241);
+    display: flex;
+    align-items: center;
+    color: grey;
+
+}
+
+.nw{
+    background-color: rgb(57, 0, 153);
+    display: flex;
+    width: 100%;
+    height: 65px;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(255, 255, 255);
+}
+.create{
+    background-color: rgb(57, 0, 153);
+    color: rgb(255, 255, 255);
+}   

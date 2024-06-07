@@ -1,0 +1,11 @@
+// import React from 'react';
+
+function Static() {
+    return (
+        <div>
+            Static
+        </div>
+    );
+}
+
+export default Static;
