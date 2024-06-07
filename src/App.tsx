@@ -5,12 +5,12 @@ import Login from './components/Login/Login';
 import TableContent from './components/Table/TableContent';
 import './App.css';
 import Sidebar from './components/SideBar/SideBar.tsx';
-import {Routes, Route, BrowserRouter} from 'react-router-dom';
-import Admin from './pages/Admin.tsx'
-import Static from './pages/Static.tsx'
-import Article from './pages/Article.tsx'
-import PD from './pages/PD.tsx'
-import Categories from './pages/Categories.tsx'
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import Admin from './pages/Admin.tsx';
+import Static from './pages/Static.tsx';
+import Article from './pages/Article.tsx';
+import PD from './pages/PD.tsx';
+import Categories from './pages/Categories.tsx';
 
 function App() {
   const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
@@ -113,26 +113,37 @@ function App() {
 
   return (
     <div className='App'>
-      <BrowserRouter>
-        <Sidebar/>
-        <Routes>
-          <Route path='/static' element={<Static/>}></Route>
-          <Route path='/admin' element={<Admin/>}></Route>
-          <Route path='/article' element={<Article/>}></Route>
-          <Route path='/pd' element={<PD/>}></Route>
-          <Route path='/categories' element={<Categories/>}></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
-      
-    <>
-      <Login />
+      {/* <Login />
       <TableContent
         head={head}
         initialBody={body}
-      />
-    </>
+      /> */}
+      <BrowserRouter>
+        <Sidebar />
+        <Routes>
+          <Route
+            path='/static'
+            element={<Static />}
+          ></Route>
+          <Route
+            path='/admin'
+            element={<Admin />}
+          ></Route>
+          <Route
+            path='/article'
+            element={<Article />}
+          ></Route>
+          <Route
+            path='/pd'
+            element={<PD />}
+          ></Route>
+          <Route
+            path='/categories'
+            element={<Categories />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
