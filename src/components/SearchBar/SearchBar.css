@@ -1,0 +1,33 @@
+.searchInput{
+    margin-top: 5px;
+    display: flex;
+    position:relative;
+}
+
+.search input{
+    background-color: rgb(241, 241, 241);
+    border: 1px solid #b6b6b6;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 15px;
+    height: 40px;
+    width: 370px;
+}
+
+.searchIcon{
+    height: 40px;
+    width: 40px;
+    color: grey;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    right: 0;
+} 
+
+input:hover {
+    border: 1px solid greenyellow;
+}
+
+/* .searchIcon svg {
+    font-size: 10px;
+} */
