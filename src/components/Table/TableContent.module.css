@@ -1,10 +1,11 @@
 .wrapper {
-  height: 100vh;
+  height: calc(100vh - 64px);
   position: relative;
-  overflow: auto;
+  /* overflow: auto; */
   white-space: nowrap;
   padding: 16px;
   background-color: rgb(247, 248, 249);
+  margin-left: 65px;
 }
 
 .table {
@@ -69,6 +70,7 @@
   height: 34px;
   border-radius: 50%;
   transition: background-color 0.15s;
+  cursor: pointer;
 }
 
 .update_btn:hover,

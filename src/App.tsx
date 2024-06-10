@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
 import './App.css';
-import Login from './components/Login/Login';
-import TableContent from './components/Table/TableContent';
+// import Login from './components/Login/Login';
+// import TableContent from './components/Table/TableContent';
 import './App.css';
 import Sidebar from './components/SideBar/SideBar.tsx';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
@@ -14,9 +14,10 @@ import Categories from './pages/Categories.tsx';
 import ThemeProvider from './theme/ThemeProvider.tsx';
 import DraftContainer from './pages/draft/DraftContainer.tsx';
 import { Button, Stack } from '@mui/material';
+// import CreateStaticContent from './components/CreateStaticContent/CreateStaticContent.tsx';
 
 function App() {
-  const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
+  // const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
   // const head2 = ['username', 'firstname', 'lastname', 'email', 'role', 'status', 'action'];
   // const body = [
   //   {
@@ -99,10 +100,10 @@ function App() {
   //   },
   // ];
 
-  const USER_TOKEN = localStorage.getItem('accessToken');
+  // const USER_TOKEN = localStorage.getItem('accessToken');
 
-  const [body, setBody] = useState([]);
-  const AuthStr = 'Bearer ' + USER_TOKEN;
+  // // const [body, setBody] = useState([]);
+  // const AuthStr = 'Bearer ' + USER_TOKEN;
 
   // useEffect(() => {
   //   axios

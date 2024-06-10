@@ -5,11 +5,11 @@ DeleteForm.propTypes = {};
 
 function DeleteForm({
   isOpen,
-  setOpen,
+  setOpenDeleteForm,
   handleDeleteConfirm,
 }: {
   isOpen: boolean;
-  setOpen: (open: boolean) => void;
+  setOpenDeleteForm: (open: boolean) => void;
   index: number;
   handleDeleteConfirm: () => void;
 }) {
@@ -26,7 +26,7 @@ function DeleteForm({
     borderRadius: 1,
   };
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setOpenDeleteForm(false);
   const handleDeleteClick = () => {
     handleDeleteConfirm();
   };
