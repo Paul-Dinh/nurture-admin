@@ -11,6 +11,7 @@ import Static from './pages/Static.tsx';
 import Article from './pages/Article.tsx';
 import PD from './pages/PD.tsx';
 import Categories from './pages/Categories.tsx';
+// import CreateStaticContent from './components/CreateStaticContent/CreateStaticContent.tsx';
 
 function App() {
   // const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
@@ -143,6 +144,7 @@ function App() {
           ></Route>
         </Routes>
       </BrowserRouter>
+      {/* <CreateStaticContent /> */}
     </div>
   );
 }
