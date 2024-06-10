@@ -8,9 +8,10 @@ import {
   TableRow,
 } from '@mui/material';
 import React, { useState } from 'react';
-import styles from './TableContent.module.css';
-import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
+import CreateStaticContent from '../CreateStaticContent/CreateStaticContent.tsx';
 import DeleteForm from '../DeleteForm/DeleteForm.tsx';
+import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
+import styles from './TableContent.module.css';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -22,12 +23,16 @@ type Props = {
 
 function TableContent({ head, initialBody }: Props) {
   const [body, setBody] = useState(initialBody);
-  console.log(body);
-  const [open, setOpen] = useState(false);
+  const [openDeleteForm, setOpenDeleteForm] = useState(false);
+  const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
 
+  const handleUpdateClick = (idx: number) => {
+    setOpenUpdateForm(true);
+    setIndex(idx);
+  };
   const handleDeleteClick = (idx: number) => {
-    setOpen(true);
+    setOpenDeleteForm(true);
     setIndex(idx);
   };
 
@@ -35,11 +40,11 @@ function TableContent({ head, initialBody }: Props) {
     const updatedBody = [...body];
     updatedBody.splice(index, 1);
     setBody(updatedBody);
-    setOpen(false);
+    setOpenDeleteForm(false);
   };
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -52,7 +57,15 @@ function TableContent({ head, initialBody }: Props) {
   return (
     <>
       <div className={styles.wrapper}>
-        <TableContainer sx={{ height: 'calc(100% - 52px)', border: '1px solid #b3b9c4' }}>
+        <TableContainer
+          sx={{
+            height: 'calc(100% - 52px)',
+            border: '1px solid #b3b9c4',
+            '&::-webkit-scrollbar': { width: '6px', height: '6px' },
+            '&::-webkit-scrollbar-track': { background: '#f1f1f1' },
+            '&::-webkit-scrollbar-thumb': { background: 'rgba(0, 0, 0, 0.1)' },
+          }}
+        >
           <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow className={styles.table_header_row}>
@@ -112,7 +125,10 @@ function TableContent({ head, initialBody }: Props) {
                     className={`${styles.table_cell} ${styles.table_cell_action}`}
                   >
                     <div className={styles.action}>
-                      <span className={styles.update_btn}>
+                      <span
+                        className={styles.update_btn}
+                        onClick={() => handleUpdateClick(idx)}
+                      >
                         <svg
                           viewBox='0 0 34 26'
                           width='34'
@@ -190,9 +206,14 @@ function TableContent({ head, initialBody }: Props) {
         />
       </div>
 
+      <CreateStaticContent
+        isOpen={openUpdateForm}
+        setOpenUpdateForm={setOpenUpdateForm}
+      />
+
       <DeleteForm
-        isOpen={open}
-        setOpen={setOpen}
+        isOpen={openDeleteForm}
+        setOpenDeleteForm={setOpenDeleteForm}
         index={index}
         handleDeleteConfirm={handleDeleteConfirm}
       />
