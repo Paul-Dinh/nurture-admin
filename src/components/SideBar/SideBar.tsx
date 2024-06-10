@@ -22,7 +22,7 @@ import { NavLink } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import InfoBar from '../InfoBar/InfoBar';
 import { useState } from 'react';
-import './SideBar.css'
+import './SideBar.css';
 
 const drawerWidth = 240;
 
@@ -60,11 +60,11 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 interface TextItem {
-    id: number;
-    path: string;
-    label: string;
-    icon: React.ReactNode;
-  }
+  id: number;
+  path: string;
+  label: string;
+  icon: React.ReactNode;
+}
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -105,7 +105,7 @@ export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   // const navigate = useNavigate;
-  const [name,setName] = useState<string>();
+  const [name, setName] = useState<string>();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -115,22 +115,23 @@ export default function Sidebar() {
     setOpen(false);
   };
 
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}
+      <AppBar
+        position='fixed'
+        open={open}
         sx={{
           backgroundColor: '#ffffff',
-          color: '#2f2f2f'
+          color: '#2f2f2f',
         }}
       >
         <Toolbar>
           <IconButton
-            color="inherit"
-            aria-label="open drawer"
+            color='inherit'
+            aria-label='open drawer'
             onClick={handleDrawerOpen}
-            edge="start"
+            edge='start'
             sx={{
               marginRight: 5,
               ...(open && { display: 'none' }),
@@ -139,71 +140,91 @@ export default function Sidebar() {
             <MenuIcon />
           </IconButton>
           <div className='searchbar'>
-              <Typography variant="h6" noWrap component="div">
-                {name}
-              </Typography>
-              <div className='search-filter'>
-                <SearchBar/>
-                <button className='filter'><FilterAltOutlinedIcon/>Filter</button>
-              </div>
-              <button className='create'>Create {name}</button>
+            <Typography
+              variant='h6'
+              noWrap
+              component='div'
+            >
+              {name}
+            </Typography>
+            <div className='search-filter'>
+              <SearchBar />
+              <button className='filter'>
+                <FilterAltOutlinedIcon />
+                Filter
+              </button>
+            </div>
+            <button className='create'>Create {name}</button>
           </div>
-          
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-             
+      <Drawer
+        variant='permanent'
+        open={open}
+      >
         <DrawerHeader>
-          <div className='nw'>  
-          <Typography variant="h6" noWrap component="div">
-            NurtureWave
-          </Typography>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
+          <div className='nw'>
+            <Typography
+              variant='h6'
+              noWrap
+              component='div'
+            >
+              NurtureWave
+            </Typography>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
           </div>
         </DrawerHeader>
-        
-        <Divider/>
+
+        <Divider />
         <List>
           {data.map((text: TextItem) => (
-            <NavLink to={text.path} onClick={()=> {
-              setName(text.label)
-            }}>
-              <ListItem key={text.id} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
+            <NavLink
+              to={text.path}
+              onClick={() => {
+                setName(text.label);
+              }}
+            >
+              <ListItem
+                key={text.id}
+                disablePadding
+                sx={{ display: 'block' }}
               >
-                <ListItemIcon
-                
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {text.icon}
-                </ListItemIcon>
-                <ListItemText 
-                  secondary={text.label} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {text.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    secondary={text.label}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
             </NavLink>
-            
           ))}
         </List>
-        <Divider/>
-        <InfoBar/>
+        <Divider />
+        <InfoBar />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        
+      <Box
+        component='main'
+        sx={{ flexGrow: 1, p: 3, height: '64px' }}
+      >
+        {/* <DrawerHeader /> */}
       </Box>
-      
     </Box>
   );
 }

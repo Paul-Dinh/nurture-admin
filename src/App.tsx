@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
 import './App.css';
-import Login from './components/Login/Login';
-import TableContent from './components/Table/TableContent';
+// import Login from './components/Login/Login';
+// import TableContent from './components/Table/TableContent';
 import './App.css';
 import Sidebar from './components/SideBar/SideBar.tsx';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
@@ -13,7 +13,7 @@ import PD from './pages/PD.tsx';
 import Categories from './pages/Categories.tsx';
 
 function App() {
-  const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
+  // const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
   // const head2 = ['username', 'firstname', 'lastname', 'email', 'role', 'status', 'action'];
   // const body = [
   //   {
@@ -96,20 +96,20 @@ function App() {
   //   },
   // ];
 
-  const USER_TOKEN = localStorage.getItem('accessToken');
+  // const USER_TOKEN = localStorage.getItem('accessToken');
 
-  const [body, setBody] = useState([]);
-  const AuthStr = 'Bearer ' + USER_TOKEN;
+  // // const [body, setBody] = useState([]);
+  // const AuthStr = 'Bearer ' + USER_TOKEN;
 
-  useEffect(() => {
-    axios
-      .get('https://dev-api.nurture.vinova.sg/api/v1/admins/static-content', {
-        headers: { Authorization: AuthStr },
-      })
-      .then((response) => setBody(response.data.data))
-      .catch((err) => console.log(err));
-    console.log(1);
-  }, [AuthStr]);
+  // useEffect(() => {
+  //   axios
+  //     .get('https://dev-api.nurture.vinova.sg/api/v1/admins/static-content', {
+  //       headers: { Authorization: AuthStr },
+  //     })
+  //     .then((response) => setBody(response.data.data))
+  //     .catch((err) => console.log(err));
+  //   console.log(1);
+  // }, [AuthStr]);
 
   return (
     <div className='App'>
