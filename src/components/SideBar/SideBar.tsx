@@ -223,7 +223,7 @@ export default function Sidebar() {
           ))}
         </List>
         <Divider />
-        <Box sx={{}}>
+        <Box sx={{ marginTop: '380px' }}>
           <InfoBar />
         </Box>
       </Drawer>

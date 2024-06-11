@@ -53,7 +53,12 @@ function InfoBar() {
   return (
     <div className='info'>
       <Avatar sx={{ bgcolor: grey }}>A</Avatar>
-      <Typography variant='Reg_16'>{body}</Typography>
+      <Typography
+        variant='Reg_16'
+        sx={{ marginLeft: '20px' }}
+      >
+        {body}
+      </Typography>
       <Button
         id='fade-button'
         aria-controls={open ? 'fade-menu' : undefined}
