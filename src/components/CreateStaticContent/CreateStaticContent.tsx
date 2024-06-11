@@ -1,9 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import CloseIcon from '@mui/icons-material/Close';
-import { Textarea } from '@mui/joy';
 import {
   Backdrop,
   Box,
+  Button,
   Checkbox,
   Fade,
   FormControl,
@@ -14,6 +14,7 @@ import {
   Modal,
   Select,
   TextField,
+  TextareaAutosize,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -118,15 +119,6 @@ function CreateStaticContent({
                   {...register('title')}
                   error={!!errors.title}
                   helperText={errors.title?.message}
-                  sx={{
-                    '& input:hover': { border: 'none' },
-                    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#70ba2b',
-                    },
-                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      border: '1px solid #70ba2b',
-                    },
-                  }}
                   onChange={(e) => {
                     setTitle(e.target.value);
                     reset({ slug: e.target.value });
@@ -213,25 +205,21 @@ function CreateStaticContent({
 
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>
-                <Textarea
-                  minRows={5}
-                  sx={{
-                    '--Textarea-focusedInset': 'var(--any, )',
-                    '--Textarea-focusedThickness': '1px',
-                    '--Textarea-focusedHighlight': 'rgba(13,110,253,.25)',
-                    '&::before': {
-                      transition: 'box-shadow .15s ease-in-out',
-                    },
-                    '&:focus-within': {
-                      borderColor: '#86b7fe',
-                    },
-                  }}
+
+                <TextareaAutosize
+                  minRows={4}
                   {...register('content')}
                 />
               </div>
 
               <div className={styles.submit_btn}>
-                <input type='submit' />
+                {/* <button type='submit'>Submit</button> */}
+                <Button
+                  variant='contained'
+                  type='submit'
+                >
+                  Submit
+                </Button>
               </div>
             </form>
           </Box>
