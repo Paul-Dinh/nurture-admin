@@ -194,6 +194,7 @@ function CreateStaticContent({
                   control={<Checkbox />}
                   label='Required'
                   {...register('required')}
+                  defaultChecked={false}
                 />
                 <FormControlLabel
                   control={<Checkbox />}

@@ -60,6 +60,10 @@ function TableContent({ head, body, setBody }: Props) {
     setPage(0);
   };
 
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -81,7 +85,7 @@ function TableContent({ head, body, setBody }: Props) {
                     className={`${styles.table_cell} ${styles.table_cell_header} ${styles.table_header_action}`}
                   >
                     <div className={styles.table_header}>
-                      {item}
+                      {capitalizeFirstLetter(item)}
                       <span>
                         <svg
                           width='15'
@@ -121,6 +125,12 @@ function TableContent({ head, body, setBody }: Props) {
                           <StatusPoint status={item.status} />
                           {item.status}
                         </>
+                      ) : field === 'required' ? (
+                        item['isRequired'] ? (
+                          'Yes'
+                        ) : (
+                          'No'
+                        )
                       ) : (
                         item[field]
                       )}
