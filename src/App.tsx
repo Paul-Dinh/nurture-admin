@@ -17,7 +17,7 @@ import PD from './pages/PD.tsx';
 import Categories from './pages/Categories.tsx';
 import ThemeProvider from './theme/ThemeProvider.tsx';
 import DraftContainer from './pages/draft/DraftContainer.tsx';
-import { Button, Stack } from '@mui/material';
+// import { Button, Stack } from '@mui/material';
 // import CreateStaticContent from './components/CreateStaticContent/CreateStaticContent.tsx';
 
 function App() {
@@ -53,103 +53,71 @@ function App() {
     <ThemeProvider>
       <div className='App'>
         {/* <Button>AAAA</Button> */}
-        <Stack
+        {/* <Stack
           direction={'row'}
           gap={2}
         >
           <p>aaaaa</p>
           <p>bbbb</p>
-        </Stack>
-        {/* <Login />
-      <TableContent
-        head={head}
-        initialBody={body}
-      /> */}
+        </Stack> */}
         <BrowserRouter>
-          {/* <Sidebar /> */}
           <Routes>
             <Route
               path='draft/*'
               element={<DraftContainer />}
             ></Route>
             <Route
+              path='/'
+              element={<Login />}
+            ></Route>
+            <Route
+              path='/login'
+              element={<Login />}
+            ></Route>
+            <Route
               path='/static'
-              element={<Static />}
+              element={
+                <PrivateRoute>
+                  <Static />
+                </PrivateRoute>
+              }
             ></Route>
             <Route
               path='/admin'
-              element={<Admin />}
+              element={
+                <PrivateRoute>
+                  <Admin />
+                </PrivateRoute>
+              }
             ></Route>
             <Route
               path='/article'
-              element={<Article />}
+              element={
+                <PrivateRoute>
+                  <Article />
+                </PrivateRoute>
+              }
             ></Route>
             <Route
               path='/pd'
-              element={<PD />}
+              element={
+                <PrivateRoute>
+                  <PD />
+                </PrivateRoute>
+              }
             ></Route>
             <Route
               path='/categories'
-              element={<Categories />}
+              element={
+                <PrivateRoute>
+                  <Categories />
+                </PrivateRoute>
+              }
             ></Route>
           </Routes>
         </BrowserRouter>
       </div>
     </ThemeProvider>
-    <div className='App'>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path='/'
-            element={<Login />}
-          ></Route>
-          <Route
-            path='/login'
-            element={<Login />}
-          ></Route>
-          <Route
-            path='/static'
-            element={
-              <PrivateRoute>
-                <Static />
-              </PrivateRoute>
-            }
-          ></Route>
-          <Route
-            path='/admin'
-            element={
-              <PrivateRoute>
-                <Admin />
-              </PrivateRoute>
-            }
-          ></Route>
-          <Route
-            path='/article'
-            element={
-              <PrivateRoute>
-                <Article />
-              </PrivateRoute>
-            }
-          ></Route>
-          <Route
-            path='/pd'
-            element={
-              <PrivateRoute>
-                <PD />
-              </PrivateRoute>
-            }
-          ></Route>
-          <Route
-            path='/categories'
-            element={
-              <PrivateRoute>
-                <Categories />
-              </PrivateRoute>
-            }
-          ></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
   );
 }
 
