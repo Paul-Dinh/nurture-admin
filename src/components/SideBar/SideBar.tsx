@@ -181,6 +181,7 @@ export default function Sidebar() {
         <List>
           {data.map((text: TextItem) => (
             <NavLink
+              style={{ textDecoration: 'none' }}
               to={text.path}
               onClick={() => {
                 setName(text.label);

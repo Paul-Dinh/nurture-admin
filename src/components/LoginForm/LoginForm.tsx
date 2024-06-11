@@ -42,23 +42,24 @@ function LoginForm() {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-  const handleSubmitOnclick = (data: { username: string; password: string }) => {
-    axios
+  const handleSubmitOnclick = async (data: { username: string; password: string }) => {
+    await axios
       .post('https://dev-api.nurture.vinova.sg/api/v1/admins/auth/login', {
         username: data.username,
         password: data.password,
       })
       .then(function (response) {
-        return response.data.data.tokens.accessToken;
+        return response.data.data.tokens;
       })
-      .then((accessToken) => {
-        localStorage.setItem('accessToken', accessToken);
+      .then((tokens) => {
+        localStorage.setItem('accessToken', tokens.accessToken);
+        localStorage.setItem('refreshToken', tokens.refreshToken);
       })
       .catch(function (error) {
         console.log(error);
       });
 
-    navigate('staticcontent');
+    navigate('/static');
     reset();
   };
 
