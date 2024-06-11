@@ -1,9 +1,25 @@
-// import React from 'react';
-
 import TableContent from '../components/Table/TableContent';
 
 function Static() {
   const head = ['slug', 'category', 'required', 'title', 'status', 'action'];
+
+  // const USER_TOKEN = localStorage.getItem('accessToken');
+
+  // const [body, setBody] = useState([]);
+  // const AuthStr = 'Bearer ' + USER_TOKEN;
+
+  // useEffect(() => {
+  //   axios
+  //     .get('https://dev-api.nurture.vinova.sg/api/v1/admins/static-content', {
+  //       headers: { Authorization: AuthStr },
+  //     })
+  //     .then((response) => setBody(response.data.data))
+  //     .catch((err) => console.log(err));
+  //   // console.log(1);
+  // }, [AuthStr]);
+
+  // console.log(body);
+
   const body = [
     {
       id: 'dbf9ea93-5372-487c-8c60-50d071fa518c',

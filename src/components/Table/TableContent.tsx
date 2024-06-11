@@ -22,10 +22,14 @@ type Props = {
 };
 
 function TableContent({ head, initialBody }: Props) {
+  // console.log('initial body', initialBody);
   const [body, setBody] = useState(initialBody);
+  // console.log(2);
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
+
+  // console.log('body', body);
 
   const handleUpdateClick = (idx: number) => {
     setOpenUpdateForm(true);
