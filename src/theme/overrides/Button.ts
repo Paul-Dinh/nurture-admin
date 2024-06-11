@@ -4,7 +4,7 @@ export default function Button(theme: Theme): Theme['components'] {
   return {
     MuiButton: {
       defaultProps: {
-        disabled: true,
+        disabled: false,
       },
       variants: [
         {
