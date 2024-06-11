@@ -1,7 +1,7 @@
 import React from 'react';
 // import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import './InfoBar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,6 +9,8 @@ import Fade from '@mui/material/Fade';
 import Avatar from '@mui/material/Avatar';
 import { grey } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function InfoBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -19,6 +21,28 @@ function InfoBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const USER_TOKEN = localStorage.getItem('accessToken');
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [body, setBody] = useState('');
+  const AuthStr = 'Bearer ' + USER_TOKEN;
+
+  useEffect(() => {
+    axios
+      .post(
+        'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
+        { refreshToken: localStorage.getItem('refreshToken') },
+        {
+          headers: { Authorization: AuthStr },
+        },
+      )
+      .then((response) => {
+        setBody(response.data.data.admin.username);
+      })
+      .catch((err) => console.log(err));
+  }, [AuthStr]);
+
   const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.removeItem('accessToken');
@@ -28,9 +52,13 @@ function InfoBar() {
 
   return (
     <div className='info'>
-      {/* <Avatar>A</Avatar> */}
       <Avatar sx={{ bgcolor: grey }}>A</Avatar>
-      {/* <PermIdentityOutlinedIcon/> */}
+      <Typography
+        variant='Reg_16'
+        sx={{ marginLeft: '20px' }}
+      >
+        {body}
+      </Typography>
       <Button
         id='fade-button'
         aria-controls={open ? 'fade-menu' : undefined}
@@ -40,6 +68,9 @@ function InfoBar() {
       >
         <MoreHorizIcon color='primary' />
       </Button>
+      {/* <button onClick={handleClick}>
+        <MoreHorizIcon color='primary' />
+      </button> */}
       <Menu
         id='fade-menu'
         MenuListProps={{

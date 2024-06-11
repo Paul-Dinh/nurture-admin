@@ -25,6 +25,7 @@ import { useState } from 'react';
 import './SideBar.css';
 
 const drawerWidth = 240;
+// const miniDrawerWidth = 60;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -51,7 +52,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
+  padding: theme.spacing(0, 0),
   ...theme.mixins.toolbar,
 }));
 
@@ -181,10 +182,14 @@ export default function Sidebar() {
         <List>
           {data.map((text: TextItem) => (
             <NavLink
+              key={text.id}
               style={{ textDecoration: 'none' }}
               to={text.path}
               onClick={() => {
                 setName(text.label);
+                // sx={{
+                //   background:
+                // }}
               }}
             >
               <ListItem
@@ -218,13 +223,25 @@ export default function Sidebar() {
           ))}
         </List>
         <Divider />
-        <InfoBar />
+        <Box sx={{ marginTop: '380px' }}>
+          <InfoBar />
+        </Box>
       </Drawer>
       <Box
         component='main'
-        sx={{ flexGrow: 1, p: 3, height: '64px' }}
+        className={`${openedMixin} ${open ? closedMixin : ''}`}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          height: '64px',
+          // transition: theme.transitions.create(['margin', 'width'], {
+          //   easing: theme.transitions.easing.sharp,
+          //   duration: theme.transitions.duration.enteringScreen,
+          // }),
+          // marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(7)} + 1px)`,
+        }}
       >
-        {/* <DrawerHeader /> */}
+        <DrawerHeader />
       </Box>
     </Box>
   );
