@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
 import './App.css';
 // import Login from './components/Login/Login';
 // import TableContent from './components/Table/TableContent';
@@ -21,10 +21,11 @@ import DraftContainer from './pages/draft/DraftContainer.tsx';
 // import CreateStaticContent from './components/CreateStaticContent/CreateStaticContent.tsx';
 
 function App() {
-  const USER_TOKEN = localStorage.getItem('accessToken');
+  // const USER_TOKEN = localStorage.getItem('accessToken');
 
-  const [body, setBody] = useState([]);
-  const AuthStr = 'Bearer ' + USER_TOKEN;
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [body, setBody] = useState([]);
+  // const AuthStr = 'Bearer ' + USER_TOKEN;
 
   // useEffect(() => {
   //   axios
@@ -36,18 +37,18 @@ function App() {
   //   console.log(1);
   // }, [AuthStr]);
 
-  useEffect(() => {
-    axios
-      .post(
-        'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
-        { refreshToken: localStorage.getItem('refreshToken') },
-        {
-          headers: { Authorization: AuthStr },
-        },
-      )
-      .then((response) => setBody(response.data.data.username))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .post(
+  //       'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
+  //       { refreshToken: localStorage.getItem('refreshToken') },
+  //       {
+  //         headers: { Authorization: AuthStr },
+  //       },
+  //     )
+  //     .then((response) => setBody(response.data.data.username))
+  //     .catch((err) => console.log(err));
+  // }, [AuthStr]);
 
   return (
     <ThemeProvider>

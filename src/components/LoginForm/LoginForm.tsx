@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import styles from './LoginForm.module.css';
+// import CircularProgress from '@mui/material/CircularProgress';
 
 LoginForm.propTypes = {};
 
@@ -58,7 +59,6 @@ function LoginForm() {
       .catch(function (error) {
         console.log(error);
       });
-
     navigate('/static');
     reset();
   };
