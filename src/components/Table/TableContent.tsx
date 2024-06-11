@@ -18,12 +18,14 @@ type TableRowData = Record<string, any>;
 
 type Props = {
   head: Array<string>;
-  initialBody: TableRowData[];
+  body: TableRowData[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setBody: (value: React.SetStateAction<any>) => void;
 };
 
-function TableContent({ head, initialBody }: Props) {
+function TableContent({ head, body, setBody }: Props) {
   // console.log('initial body', initialBody);
-  const [body, setBody] = useState(initialBody);
+  // const [body, setBody] = useState(initialBody);
   // console.log(2);
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
