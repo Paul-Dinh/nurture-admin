@@ -11,6 +11,9 @@ import Static from './pages/Static.tsx';
 import Article from './pages/Article.tsx';
 import PD from './pages/PD.tsx';
 import Categories from './pages/Categories.tsx';
+import ThemeProvider from './theme/ThemeProvider.tsx';
+import DraftContainer from './pages/draft/DraftContainer.tsx';
+import { Button, Stack } from '@mui/material';
 // import CreateStaticContent from './components/CreateStaticContent/CreateStaticContent.tsx';
 
 function App() {
@@ -113,39 +116,52 @@ function App() {
   // }, [AuthStr]);
 
   return (
-    <div className='App'>
-      {/* <Login />
+    <ThemeProvider>
+      <div className='App'>
+        {/* <Button>AAAA</Button> */}
+        <Stack
+          direction={'row'}
+          gap={2}
+        >
+          <p>aaaaa</p>
+          <p>bbbb</p>
+        </Stack>
+        {/* <Login />
       <TableContent
         head={head}
         initialBody={body}
       /> */}
-      <BrowserRouter>
-        <Sidebar />
-        <Routes>
-          <Route
-            path='/static'
-            element={<Static />}
-          ></Route>
-          <Route
-            path='/admin'
-            element={<Admin />}
-          ></Route>
-          <Route
-            path='/article'
-            element={<Article />}
-          ></Route>
-          <Route
-            path='/pd'
-            element={<PD />}
-          ></Route>
-          <Route
-            path='/categories'
-            element={<Categories />}
-          ></Route>
-        </Routes>
-      </BrowserRouter>
-      {/* <CreateStaticContent /> */}
-    </div>
+        <BrowserRouter>
+          {/* <Sidebar /> */}
+          <Routes>
+            <Route
+              path='draft/*'
+              element={<DraftContainer />}
+            ></Route>
+            <Route
+              path='/static'
+              element={<Static />}
+            ></Route>
+            <Route
+              path='/admin'
+              element={<Admin />}
+            ></Route>
+            <Route
+              path='/article'
+              element={<Article />}
+            ></Route>
+            <Route
+              path='/pd'
+              element={<PD />}
+            ></Route>
+            <Route
+              path='/categories'
+              element={<Categories />}
+            ></Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   );
 }
 
