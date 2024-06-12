@@ -18,22 +18,22 @@ type TableRowData = Record<string, any>;
 
 type Props = {
   head: Array<string>;
-  initialBody: TableRowData[];
+  body: TableRowData[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setBody: (value: React.SetStateAction<any>) => void;
 };
 
-function TableContent({ head, initialBody }: Props) {
-  // console.log('initial body', initialBody);
-  const [body, setBody] = useState(initialBody);
-  // console.log(2);
+function TableContent({ head, body, setBody }: Props) {
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
+  const [selectedRow, setSelectedRow] = useState({});
 
-  // console.log('body', body);
-
-  const handleUpdateClick = (idx: number) => {
+  const handleUpdateClick = (idx: number, item: TableRowData) => {
     setOpenUpdateForm(true);
     setIndex(idx);
+    console.log(item);
+    setSelectedRow(item);
   };
   const handleDeleteClick = (idx: number) => {
     setOpenDeleteForm(true);
@@ -58,6 +58,10 @@ function TableContent({ head, initialBody }: Props) {
     setPage(0);
   };
 
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -65,9 +69,6 @@ function TableContent({ head, initialBody }: Props) {
           sx={{
             height: 'calc(100% - 52px)',
             border: '1px solid #b3b9c4',
-            '&::-webkit-scrollbar': { width: '6px', height: '6px' },
-            '&::-webkit-scrollbar-track': { background: '#f1f1f1' },
-            '&::-webkit-scrollbar-thumb': { background: 'rgba(0, 0, 0, 0.1)' },
           }}
         >
           <Table sx={{ minWidth: 650 }}>
@@ -79,7 +80,7 @@ function TableContent({ head, initialBody }: Props) {
                     className={`${styles.table_cell} ${styles.table_cell_header} ${styles.table_header_action}`}
                   >
                     <div className={styles.table_header}>
-                      {item}
+                      {capitalizeFirstLetter(item)}
                       <span>
                         <svg
                           width='15'
@@ -119,6 +120,12 @@ function TableContent({ head, initialBody }: Props) {
                           <StatusPoint status={item.status} />
                           {item.status}
                         </>
+                      ) : field === 'required' ? (
+                        item['isRequired'] ? (
+                          'Yes'
+                        ) : (
+                          'No'
+                        )
                       ) : (
                         item[field]
                       )}
@@ -131,7 +138,7 @@ function TableContent({ head, initialBody }: Props) {
                     <div className={styles.action}>
                       <span
                         className={styles.update_btn}
-                        onClick={() => handleUpdateClick(idx)}
+                        onClick={() => handleUpdateClick(idx, item)}
                       >
                         <svg
                           viewBox='0 0 34 26'
@@ -213,6 +220,7 @@ function TableContent({ head, initialBody }: Props) {
       <CreateStaticContent
         isOpen={openUpdateForm}
         setOpenUpdateForm={setOpenUpdateForm}
+        selectedRow={selectedRow}
       />
 
       <DeleteForm

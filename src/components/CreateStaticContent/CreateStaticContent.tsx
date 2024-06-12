@@ -17,12 +17,15 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import styles from './CreateStaticContent.module.css';
 
 CreateStaticContent.propTypes = {};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TableRowData = Record<string, any>;
 
 const style = {
   position: 'absolute',
@@ -38,9 +41,11 @@ const style = {
 function CreateStaticContent({
   isOpen,
   setOpenUpdateForm,
+  selectedRow,
 }: {
   isOpen: boolean;
   setOpenUpdateForm: (open: boolean) => void;
+  selectedRow: TableRowData;
 }) {
   const handleClose = () => setOpenUpdateForm(false);
 
@@ -66,6 +71,14 @@ function CreateStaticContent({
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (selectedRow) {
+      reset(selectedRow);
+      setTitle(selectedRow.title); // Set the form values to the existing data
+    }
+  }, [selectedRow, reset]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
     console.log(data);
@@ -194,6 +207,7 @@ function CreateStaticContent({
                   control={<Checkbox />}
                   label='Required'
                   {...register('required')}
+                  defaultChecked={false}
                 />
                 <FormControlLabel
                   control={<Checkbox />}
@@ -213,7 +227,6 @@ function CreateStaticContent({
               </div>
 
               <div className={styles.submit_btn}>
-                {/* <button type='submit'>Submit</button> */}
                 <Button
                   variant='contained'
                   type='submit'
