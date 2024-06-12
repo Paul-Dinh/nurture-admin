@@ -14,8 +14,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import styles from './LoginForm.module.css';
 import Loading from '../Loading/Loading';
+import styles from './LoginForm.module.css';
 
 LoginForm.propTypes = {};
 
@@ -44,8 +44,10 @@ function LoginForm() {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
   const handleSubmitOnclick = async (data: { username: string; password: string }) => {
     setIsLoading(true);
+
     await axios
       .post('https://dev-api.nurture.vinova.sg/api/v1/admins/auth/login', {
         username: data.username,
