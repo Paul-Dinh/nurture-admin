@@ -117,8 +117,8 @@ function TableContent({ head, body, setBody }: Props) {
                     >
                       {field === 'status' ? (
                         <>
-                          <StatusPoint status={item.status} />
-                          {item.status}
+                          <StatusPoint status={capitalizeFirstLetter(item.status)} />
+                          {capitalizeFirstLetter(item.status)}
                         </>
                       ) : field === 'required' ? (
                         item['isRequired'] ? (

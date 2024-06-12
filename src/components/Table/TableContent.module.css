@@ -1,7 +1,6 @@
 .wrapper {
   height: calc(100vh - 64px);
   position: relative;
-  /* overflow: auto; */
   white-space: nowrap;
   padding: 16px;
   background-color: rgb(247, 248, 249);
@@ -57,7 +56,6 @@
 
 .table_cell_action {
   border-left: 2px solid rgb(133, 144, 162);
-  /* background-color: #fff; */
 }
 
 .table_cell:first-child {
