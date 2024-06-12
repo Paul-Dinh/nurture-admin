@@ -4,25 +4,29 @@ import {
   Backdrop,
   Box,
   Button,
-  Checkbox,
   Fade,
   FormControl,
-  FormControlLabel,
-  FormHelperText,
+  //   FormControlLabel,
+  //   FormHelperText,
   FormLabel,
   MenuItem,
   Modal,
   Select,
   TextField,
-  TextareaAutosize,
+  //   TextareaAutosize,
   Typography,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  Divider,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import styles from './CreateStaticContent.module.css';
+import styles from './CreateAdminManagement.module.css';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-CreateStaticContent.propTypes = {};
+CreateAdminManagement.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -38,7 +42,7 @@ const style = {
   borderRadius: 1,
 };
 
-function CreateStaticContent({
+function CreateAdminManagement({
   isOpen,
   setOpenUpdateForm,
   selectedRow,
@@ -53,13 +57,12 @@ function CreateStaticContent({
 
   const schema = yup
     .object({
-      title: yup.string().required('This field is required.'),
-      slug: yup.string().required('This field is required.'),
-      category: yup.string().required('This field is required.'),
+      username: yup.string().required('This field is required.'),
+      firstname: yup.string().required('This field is required.'),
+      lastname: yup.string().required('This field is required.'),
+      email: yup.string().required('Email is required').email('Invalid email'),
       status: yup.string().required('This field is required.'),
-      required: yup.boolean(),
-      hasContent: yup.boolean(),
-      content: yup.string(),
+      password: yup.string().required('Please enter password'),
     })
     .required();
 
@@ -72,10 +75,16 @@ function CreateStaticContent({
     resolver: yupResolver(schema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   useEffect(() => {
     if (selectedRow) {
       reset(selectedRow);
-      setTitle(selectedRow.title);
+      setTitle(selectedRow.title); // Set the form values to the existing data
     }
   }, [selectedRow, reset]);
 
@@ -108,33 +117,31 @@ function CreateStaticContent({
                 variant='h6'
                 component='h2'
               >
-                Create Static Content
+                Create Admin Management
               </Typography>
               <button onClick={handleClose}>
                 <CloseIcon sx={{ cursor: 'pointer' }} />
               </button>
             </div>
+
+            <Divider />
             <form
               onSubmit={handleSubmit(onSubmit)}
               className={styles.form}
             >
               <div className={styles.form_control}>
                 <FormLabel
-                  style={{ marginBottom: '6px' }}
-                  error={!!errors.title}
+                  style={{ marginTop: '20px', marginBottom: '6px' }}
+                  error={!!errors.username}
                 >
-                  Title
+                  Username
                 </FormLabel>
                 <TextField
                   id='outlined-basic'
                   variant='outlined'
-                  {...register('title')}
-                  error={!!errors.title}
-                  helperText={errors.title?.message}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                    reset({ slug: e.target.value });
-                  }}
+                  {...register('username')}
+                  error={!!errors.username}
+                  helperText={errors.username?.message}
                 />
               </div>
 
@@ -144,23 +151,17 @@ function CreateStaticContent({
                   style={{ width: '49%' }}
                 >
                   <FormLabel
-                    error={!!errors.slug}
+                    error={!!errors.firstname}
                     style={{ marginBottom: '6px' }}
                   >
-                    Slug
+                    First Name
                   </FormLabel>
                   <TextField
-                    {...register('slug')}
+                    {...register('firstname')}
                     id='outlined-basic'
                     variant='outlined'
-                    disabled
-                    error={!!errors.slug}
-                    helperText={errors.slug?.message}
-                    value={title}
-                    sx={{
-                      '& input': { backgroundColor: '#eeecec' },
-                      '& input:hover': { border: 'none' },
-                    }}
+                    error={!!errors.firstname}
+                    helperText={errors.firstname?.message}
                   />
                 </div>
 
@@ -169,57 +170,76 @@ function CreateStaticContent({
                   style={{ width: '49%' }}
                 >
                   <FormLabel
-                    error={!!errors.category}
+                    error={!!errors.lastname}
                     style={{ marginBottom: '6px' }}
                   >
-                    Category
+                    Last Name
                   </FormLabel>
-                  <FormControl error={!!errors.category}>
-                    <Select {...register('category')}>
-                      <MenuItem value={'Term'}>Term</MenuItem>
-                      <MenuItem value={'Payment Policy'}>Payment Policy</MenuItem>
-                      <MenuItem value={'Private & Security'}>Private & Security</MenuItem>
-                    </Select>
-                    <FormHelperText error={!!errors.category}>
-                      {errors.category?.message}
-                    </FormHelperText>
-                  </FormControl>
+                  <TextField
+                    {...register('lastname')}
+                    id='outlined-basic'
+                    variant='outlined'
+                    error={!!errors.lastname}
+                    helperText={errors.lastname?.message}
+                    value={title}
+                  />
                 </div>
+              </div>
+
+              <div className={styles.form_control}>
+                <FormLabel
+                  style={{ marginBottom: '6px' }}
+                  error={!!errors.username}
+                >
+                  Email
+                </FormLabel>
+                <TextField
+                  id='outlined-basic'
+                  variant='outlined'
+                  {...register('email')}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
               </div>
 
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Status</FormLabel>
                 <FormControl>
                   <Select {...register('status')}>
-                    <MenuItem value={'Show'}>Show</MenuItem>
-                    <MenuItem value={'Hide'}>Hide</MenuItem>
+                    <MenuItem value={'Active'}>Active</MenuItem>
+                    <MenuItem value={'Inactive'}>Inactive</MenuItem>
                   </Select>
                 </FormControl>
               </div>
 
               <div
                 className={styles.form_control}
-                style={{ marginLeft: '16px' }}
+                style={{ marginLeft: '0px' }}
               >
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label='Required'
-                  {...register('required')}
-                  defaultChecked={false}
-                />
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label='Has content'
-                  {...register('hasContent')}
-                />
-              </div>
-
-              <div className={styles.form_control}>
-                <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>
-
-                <TextareaAutosize
-                  minRows={10}
-                  {...register('content')}
+                <FormLabel
+                  error={!!errors.password}
+                  style={{ marginBottom: '6px' }}
+                >
+                  Password
+                </FormLabel>
+                <OutlinedInput
+                  {...register('password')}
+                  placeholder='Password'
+                  id='outlined-adornment-password'
+                  type={showPassword ? 'text' : 'password'}
+                  error={!!errors.password}
+                  endAdornment={
+                    <InputAdornment position='end'>
+                      <IconButton
+                        aria-label='toggle password visibility'
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge='end'
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
                 />
               </div>
 
@@ -228,7 +248,7 @@ function CreateStaticContent({
                   variant='contained'
                   type='submit'
                 >
-                  Submit
+                  Create
                 </Button>
               </div>
             </form>
@@ -239,4 +259,4 @@ function CreateStaticContent({
   );
 }
 
-export default CreateStaticContent;
+export default CreateAdminManagement;
