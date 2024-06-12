@@ -75,7 +75,7 @@ function CreateStaticContent({
   useEffect(() => {
     if (selectedRow) {
       reset(selectedRow);
-      setTitle(selectedRow.title); // Set the form values to the existing data
+      setTitle(selectedRow.title);
     }
   }, [selectedRow, reset]);
 
@@ -201,7 +201,6 @@ function CreateStaticContent({
                 className={styles.form_control}
                 style={{ marginLeft: '16px' }}
               >
-                {/* <FormGroup> */}
                 <FormControlLabel
                   control={<Checkbox />}
                   label='Required'
@@ -213,14 +212,13 @@ function CreateStaticContent({
                   label='Has content'
                   {...register('hasContent')}
                 />
-                {/* </FormGroup> */}
               </div>
 
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>
 
                 <TextareaAutosize
-                  minRows={4}
+                  minRows={10}
                   {...register('content')}
                 />
               </div>
