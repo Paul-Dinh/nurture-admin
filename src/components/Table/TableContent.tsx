@@ -24,18 +24,16 @@ type Props = {
 };
 
 function TableContent({ head, body, setBody }: Props) {
-  // console.log('initial body', initialBody);
-  // const [body, setBody] = useState(initialBody);
-  // console.log(2);
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
+  const [selectedRow, setSelectedRow] = useState({});
 
-  // console.log('body', body);
-
-  const handleUpdateClick = (idx: number) => {
+  const handleUpdateClick = (idx: number, item: TableRowData) => {
     setOpenUpdateForm(true);
     setIndex(idx);
+    console.log(item);
+    setSelectedRow(item);
   };
   const handleDeleteClick = (idx: number) => {
     setOpenDeleteForm(true);
@@ -71,9 +69,6 @@ function TableContent({ head, body, setBody }: Props) {
           sx={{
             height: 'calc(100% - 52px)',
             border: '1px solid #b3b9c4',
-            '&::-webkit-scrollbar': { width: '6px', height: '6px' },
-            '&::-webkit-scrollbar-track': { background: '#f1f1f1' },
-            '&::-webkit-scrollbar-thumb': { background: 'rgba(0, 0, 0, 0.1)' },
           }}
         >
           <Table sx={{ minWidth: 650 }}>
@@ -143,7 +138,7 @@ function TableContent({ head, body, setBody }: Props) {
                     <div className={styles.action}>
                       <span
                         className={styles.update_btn}
-                        onClick={() => handleUpdateClick(idx)}
+                        onClick={() => handleUpdateClick(idx, item)}
                       >
                         <svg
                           viewBox='0 0 34 26'
@@ -225,6 +220,7 @@ function TableContent({ head, body, setBody }: Props) {
       <CreateStaticContent
         isOpen={openUpdateForm}
         setOpenUpdateForm={setOpenUpdateForm}
+        selectedRow={selectedRow}
       />
 
       <DeleteForm

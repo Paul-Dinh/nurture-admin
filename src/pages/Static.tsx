@@ -12,22 +12,23 @@ function Static() {
   const USER_TOKEN = localStorage.getItem('accessToken');
   const AuthStr = 'Bearer ' + USER_TOKEN;
 
-  // async function refresh() {
-  //   setIsLoading(true);
-  //   await axios
-  //     .post(
-  //       'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
-  //       { refreshToken: localStorage.getItem('refreshToken') },
-  //       {
-  //         headers: { Authorization: AuthStr },
-  //       },
-  //     )
-  //     .then((response) => {
-  //       setBody(response.data.data.admin.username);
-  //     })
-  //     .catch((err) => console.log(err));
-  //   setIsLoading(false);
-  // }
+  async function refresh() {
+    setIsLoading(true);
+    await axios
+      .post(
+        'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
+        { refreshToken: localStorage.getItem('refreshToken') },
+        {
+          headers: { Authorization: AuthStr },
+        },
+      )
+      .then((response) => {
+        // setBody(response.data.data.admin.username);
+        localStorage.setItem('accessToken', response.data.data.tokens.accessToken);
+      })
+      .catch((err) => console.log(err));
+    setIsLoading(false);
+  }
 
   useEffect(() => {
     async function handleLoading() {
@@ -42,7 +43,11 @@ function Static() {
       setIsLoading(false);
     }
 
+    refresh();
+
     handleLoading();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [AuthStr]);
 
   // console.log(body);
