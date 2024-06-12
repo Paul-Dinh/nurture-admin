@@ -17,20 +17,6 @@ function Article() {
       setIsLoading(true);
 
       await axios
-        .get('https://dev-api.nurture.vinova.sg/api/v1/admins/articles/', {
-          headers: { Authorization: AuthStr },
-          params: { limit: 25, page: 1, f_type: 'article' },
-        })
-        .then((response) => setBody(response.data.data))
-        .catch((err) => console.log(err));
-
-      setIsLoading(false);
-    }
-
-    async function refresh() {
-      setIsLoading(true);
-
-      await axios
         .post(
           'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
           { refreshToken: localStorage.getItem('refreshToken') },
@@ -43,10 +29,17 @@ function Article() {
         })
         .catch((err) => console.log(err));
 
+      await axios
+        .get('https://dev-api.nurture.vinova.sg/api/v1/admins/articles/', {
+          headers: { Authorization: AuthStr },
+          params: { limit: 25, page: 1, f_type: 'article' },
+        })
+        .then((response) => setBody(response.data.data))
+        .catch((err) => console.log(err));
+
       setIsLoading(false);
     }
 
-    refresh();
     handleLoading();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
