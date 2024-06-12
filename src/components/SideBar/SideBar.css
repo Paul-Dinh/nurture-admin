@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.filter {
+/* .filter {
   margin-left: 8px;
   height: 40px;
   width: 100px;
@@ -27,7 +27,7 @@
   border: 1px solid rgb(179, 185, 196);
   border-radius: 5px;
   transition: border 0.25s;
-}
+} */
 
 .filter:hover {
   border: 1px solid rgb(115, 132, 150);

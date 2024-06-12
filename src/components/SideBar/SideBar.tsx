@@ -16,13 +16,18 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+// import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import Filter from '../Filter/Filter';
 import data from '../../data/data';
 import { NavLink } from 'react-router-dom';
 import SearchBar from '../SearchBar/SearchBar';
 import InfoBar from '../InfoBar/InfoBar';
 import { useState } from 'react';
 import './SideBar.css';
+import { Button } from '@mui/material';
+// import Loading from '../Loading/Loading';
+import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
+import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
 
 const drawerWidth = 240;
 // const miniDrawerWidth = 60;
@@ -107,6 +112,11 @@ export default function Sidebar() {
   const [open, setOpen] = React.useState(false);
   // const navigate = useNavigate;
   const [name, setName] = useState<string>();
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [openUpdateForm, setOpenUpdateForm] = useState(false);
+
+  const [openCreateStatic, setOpenCreateStatic] = useState(false);
+  const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -116,133 +126,173 @@ export default function Sidebar() {
     setOpen(false);
   };
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position='fixed'
-        open={open}
-        sx={{
-          backgroundColor: '#ffffff',
-          color: '#2f2f2f',
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            onClick={handleDrawerOpen}
-            edge='start'
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className='searchbar'>
-            <Typography
-              variant='h6'
-              noWrap
-              component='div'
-            >
-              {name}
-            </Typography>
-            <div className='search-filter'>
-              <SearchBar />
-              <button className='filter'>
-                <FilterAltOutlinedIcon />
-                Filter
-              </button>
-            </div>
-            <button className='create'>Create {name}</button>
-          </div>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant='permanent'
-        open={open}
-      >
-        <DrawerHeader>
-          <div className='nw'>
-            <Typography
-              variant='h6'
-              noWrap
-              component='div'
-            >
-              NurtureWave
-            </Typography>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-        </DrawerHeader>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleCreateForm = (name: any) => {
+    if (name === 'Static Content') setOpenCreateStatic(true);
+    if (name === 'Admin Management') setOpenCreateAdmin(true);
+  };
 
-        <Divider />
-        <List>
-          {data.map((text: TextItem) => (
-            <NavLink
-              key={text.id}
-              style={{ textDecoration: 'none' }}
-              to={text.path}
-              onClick={() => {
-                setName(text.label);
-                // sx={{
-                //   background:
-                // }}
+  return (
+    <>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <AppBar
+          position='fixed'
+          open={open}
+          sx={{
+            backgroundColor: '#ffffff',
+            color: '#2f2f2f',
+          }}
+        >
+          <Toolbar>
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              onClick={handleDrawerOpen}
+              edge='start'
+              sx={{
+                marginRight: 5,
+                ...(open && { display: 'none' }),
               }}
             >
-              <ListItem
-                key={text.id}
-                disablePadding
-                sx={{ display: 'block' }}
+              <MenuIcon />
+            </IconButton>
+            <div className='searchbar'>
+              <Typography
+                variant='h6'
+                noWrap
+                component='div'
               >
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
+                {name}
+              </Typography>
+              <div className='search-filter'>
+                <SearchBar />
+                {/* <button className='filter'>
+                <FilterAltOutlinedIcon />
+                Filter
+              </button> */}
+                {/* <Button
+                variant='contained'
+                sx={{
+                  background: 'rgb(241, 241, 241)',
+                  color: 'grey',
+                  height: '40px',
+                  marginLeft: '10px',
+                  border: '1px solid #b3b9c4',
+                  ':hover': {
+                    background: 'rgb(241, 241, 241)',
+                    border: '1px solid rgb(115,132,150)',
+                  },
+                }}
+              >
+                <FilterAltOutlinedIcon /> Filter
+              </Button> */}
+                <Filter />
+              </div>
+              <Button
+                variant='contained'
+                onClick={() => handleCreateForm(name)}
+              >
+                Create {name}
+              </Button>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant='permanent'
+          open={open}
+        >
+          <DrawerHeader>
+            <div className='nw'>
+              <Typography
+                variant='h6'
+                noWrap
+                component='div'
+              >
+                NurtureWave
+              </Typography>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              </IconButton>
+            </div>
+          </DrawerHeader>
+
+          <Divider />
+          <List>
+            {data.map((text: TextItem) => (
+              <NavLink
+                key={text.id}
+                style={{ textDecoration: 'none' }}
+                to={text.path}
+                onClick={() => {
+                  setName(text.label);
+                  // sx={{
+                  //   background:
+                  // }}
+                }}
+              >
+                <ListItem
+                  key={text.id}
+                  disablePadding
+                  sx={{ display: 'block' }}
                 >
-                  <ListItemIcon
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
                     }}
                   >
-                    {text.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    secondary={text.label}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            </NavLink>
-          ))}
-        </List>
-        <Divider />
-        <Box sx={{ marginTop: '380px' }}>
-          <InfoBar />
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {text.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      secondary={text.label}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </NavLink>
+            ))}
+          </List>
+          <Divider />
+          <Box>
+            <InfoBar />
+          </Box>
+        </Drawer>
+        <Box
+          component='main'
+          className={`${openedMixin} ${open ? closedMixin : ''}`}
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            height: '64px',
+            // transition: theme.transitions.create(['margin', 'width'], {
+            //   easing: theme.transitions.easing.sharp,
+            //   duration: theme.transitions.duration.enteringScreen,
+            // }),
+            // marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(7)} + 1px)`,
+          }}
+        >
+          <DrawerHeader />
         </Box>
-      </Drawer>
-      <Box
-        component='main'
-        className={`${openedMixin} ${open ? closedMixin : ''}`}
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          height: '64px',
-          // transition: theme.transitions.create(['margin', 'width'], {
-          //   easing: theme.transitions.easing.sharp,
-          //   duration: theme.transitions.duration.enteringScreen,
-          // }),
-          // marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(7)} + 1px)`,
-        }}
-      >
-        <DrawerHeader />
       </Box>
-    </Box>
+      <CreateStaticContent
+        isOpen={openCreateStatic}
+        setOpenUpdateForm={setOpenCreateStatic}
+        selectedRow={{}}
+      />
+      <CreateAdminManagement
+        isOpen={openCreateAdmin}
+        setOpenUpdateForm={setOpenCreateAdmin}
+        selectedRow={{}}
+      />
+    </>
   );
 }
