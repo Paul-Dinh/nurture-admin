@@ -19,7 +19,7 @@ function Static() {
       await axios
         .post(
           'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
-          { refreshToken: localStorage.getItem('refreshToken') },
+          // { refreshToken: localStorage.getItem('refreshToken') },
           {
             headers: { Authorization: AuthStr },
           },
