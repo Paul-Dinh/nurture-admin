@@ -32,9 +32,9 @@ function TableContent({ head, body, setBody }: Props) {
   const handleUpdateClick = (idx: number, item: TableRowData) => {
     setOpenUpdateForm(true);
     setIndex(idx);
-    console.log(item);
     setSelectedRow(item);
   };
+
   const handleDeleteClick = (idx: number) => {
     setOpenDeleteForm(true);
     setIndex(idx);
