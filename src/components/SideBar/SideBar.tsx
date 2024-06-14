@@ -28,6 +28,7 @@ import { Button } from '@mui/material';
 // import Loading from '../Loading/Loading';
 import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
+import CreateArticle from '../CreateArticle/CreateArticle';
 
 const drawerWidth = 240;
 // const miniDrawerWidth = 60;
@@ -117,6 +118,7 @@ export default function Sidebar() {
 
   const [openCreateStatic, setOpenCreateStatic] = useState(false);
   const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
+  const [openCreateArticle, setOpenCreateArticle] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -130,6 +132,9 @@ export default function Sidebar() {
   const handleCreateForm = (name: any) => {
     if (name === 'Static Content') setOpenCreateStatic(true);
     if (name === 'Admin Management') setOpenCreateAdmin(true);
+    if (name === 'Article') setOpenCreateArticle(true);
+    if (name === 'PD Session') setOpenCreateAdmin(true);
+    if (name === 'Categories') setOpenCreateAdmin(true);
   };
 
   return (
@@ -291,6 +296,11 @@ export default function Sidebar() {
       <CreateAdminManagement
         isOpen={openCreateAdmin}
         setOpenUpdateForm={setOpenCreateAdmin}
+        selectedRow={{}}
+      />
+      <CreateArticle
+        isOpen={openCreateArticle}
+        setOpenUpdateForm={setOpenCreateArticle}
         selectedRow={{}}
       />
     </>

@@ -23,12 +23,10 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import styles from './CreateAdminManagement.module.css';
+import styles from './CreateArticle.module.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Loading from '../Loading/Loading';
+// import Loading from '../Loading/Loading';
 // import axios from 'axios';
-import toast from 'react-hot-toast';
-import instance from '../../api/AxiosConfig';
 
 CreateAdminManagement.propTypes = {};
 
@@ -61,7 +59,7 @@ function CreateAdminManagement({
 
   const schema = yup
     .object({
-      username: yup.string().required('This field is required.'),
+      title: yup.string().required('This field is required.'),
       firstname: yup.string().required('This field is required.'),
       lastname: yup.string().required('This field is required.'),
       email: yup.string().required('Email is required').email('Invalid email'),
@@ -92,34 +90,9 @@ function CreateAdminManagement({
     }
   }, [selectedRow, reset]);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  // const USER_TOKEN = localStorage.getItem('accessToken');
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [body, setBody] = useState('');
-  // const AuthStr = 'Bearer ' + USER_TOKEN;
-
+  //   const [isLoading, setIsLoading] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmitOnClick = async (data: any) => {
-    setIsLoading(true);
-    await instance
-      .post('admins/admins', data)
-      // .then(function (response) {
-      //   return response.data;
-      // })
-      // .then((tokens) => {
-      //   localStorage.setItem('accessToken', tokens.accessToken);
-      // })
-      .then((response) => {
-        return response.data;
-        toast.success('Successed');
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    setIsLoading(false);
+  const handleSubmitOnClick = (data: any) => {
     console.log(data);
     reset();
   };
@@ -147,7 +120,7 @@ function CreateAdminManagement({
                 variant='h6'
                 component='h2'
               >
-                Create Admin Management
+                Create Article
               </Typography>
               <button onClick={handleClose}>
                 <CloseIcon sx={{ cursor: 'pointer' }} />
@@ -162,16 +135,16 @@ function CreateAdminManagement({
               <div className={styles.form_control}>
                 <FormLabel
                   style={{ marginTop: '20px', marginBottom: '6px' }}
-                  error={!!errors.username}
+                  error={!!errors.title}
                 >
-                  Username
+                  Title
                 </FormLabel>
                 <TextField
                   id='outlined-basic'
                   variant='outlined'
-                  {...register('username')}
-                  error={!!errors.username}
-                  helperText={errors.username?.message}
+                  {...register('title')}
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
                 />
               </div>
 
@@ -285,7 +258,7 @@ function CreateAdminManagement({
           </Box>
         </Fade>
       </Modal>
-      <Loading open={isLoading} />
+      {/* <Loading open={isLoading} /> */}
     </div>
   );
 }
