@@ -27,8 +27,9 @@ import styles from './CreateAdminManagement.module.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Loading from '../Loading/Loading';
 // import axios from 'axios';
-import toast from 'react-hot-toast';
 import instance from '../../api/AxiosConfig';
+// import { toast, ToastContainer } from 'react-toastify';
+// import Toast from '../../Toast';
 
 CreateAdminManagement.propTypes = {};
 
@@ -62,8 +63,8 @@ function CreateAdminManagement({
   const schema = yup
     .object({
       username: yup.string().required('This field is required.'),
-      firstname: yup.string().required('This field is required.'),
-      lastname: yup.string().required('This field is required.'),
+      firstName: yup.string().required('This field is required.'),
+      lastName: yup.string().required('This field is required.'),
       email: yup.string().required('Email is required').email('Invalid email'),
       status: yup.string().required('This field is required.'),
       password: yup.string().required('Please enter password'),
@@ -94,27 +95,30 @@ function CreateAdminManagement({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // const USER_TOKEN = localStorage.getItem('accessToken');
+  const USER_TOKEN = localStorage.getItem('accessToken');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [body, setBody] = useState('');
-  // const AuthStr = 'Bearer ' + USER_TOKEN;
+  // const [body, setBody] = useState('');
+  const AuthStr = 'Bearer ' + USER_TOKEN;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
     setIsLoading(true);
     await instance
-      .post('admins/admins', data)
-      // .then(function (response) {
-      //   return response.data;
-      // })
-      // .then((tokens) => {
-      //   localStorage.setItem('accessToken', tokens.accessToken);
-      // })
-      .then((response) => {
-        return response.data;
-        toast.success('Successed');
+      .post('admins/admins', data, {
+        headers: { Authorization: AuthStr },
       })
+      .then(function (response) {
+        // toast.success('Admin added successfully!', {
+        //   position: 'bottom-left',
+        //   autoClose: 15000,
+        // });
+        return response.data;
+      })
+      // .then((data) => {
+      //   return data;
+      //   // localStorage.setItem('accessToken', data);
+      // })
       .catch(function (error) {
         console.log(error);
       });
@@ -181,17 +185,17 @@ function CreateAdminManagement({
                   style={{ width: '49%' }}
                 >
                   <FormLabel
-                    error={!!errors.firstname}
+                    error={!!errors.firstName}
                     style={{ marginBottom: '6px' }}
                   >
                     First Name
                   </FormLabel>
                   <TextField
-                    {...register('firstname')}
+                    {...register('firstName')}
                     id='outlined-basic'
                     variant='outlined'
-                    error={!!errors.firstname}
-                    helperText={errors.firstname?.message}
+                    error={!!errors.firstName}
+                    helperText={errors.firstName?.message}
                   />
                 </div>
 
@@ -200,17 +204,17 @@ function CreateAdminManagement({
                   style={{ width: '49%' }}
                 >
                   <FormLabel
-                    error={!!errors.lastname}
+                    error={!!errors.lastName}
                     style={{ marginBottom: '6px' }}
                   >
                     Last Name
                   </FormLabel>
                   <TextField
-                    {...register('lastname')}
+                    {...register('lastName')}
                     id='outlined-basic'
                     variant='outlined'
-                    error={!!errors.lastname}
-                    helperText={errors.lastname?.message}
+                    error={!!errors.lastName}
+                    helperText={errors.lastName?.message}
                     value={title}
                   />
                 </div>
@@ -236,8 +240,8 @@ function CreateAdminManagement({
                 <FormLabel style={{ marginBottom: '6px' }}>Status</FormLabel>
                 <FormControl>
                   <Select {...register('status')}>
-                    <MenuItem value={'Active'}>Active</MenuItem>
-                    <MenuItem value={'Inactive'}>Inactive</MenuItem>
+                    <MenuItem value={'active'}>Active</MenuItem>
+                    <MenuItem value={'inactive'}>Inactive</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -286,6 +290,7 @@ function CreateAdminManagement({
         </Fade>
       </Modal>
       <Loading open={isLoading} />
+      {/* <ToastContainer /> */}
     </div>
   );
 }

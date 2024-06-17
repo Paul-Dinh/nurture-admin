@@ -16,18 +16,18 @@ function Article() {
     async function handleLoading() {
       setIsLoading(true);
 
-      await axios
-        .post(
-          'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
-          // { refreshToken: localStorage.getItem('refreshToken') },
-          {
-            headers: { Authorization: AuthStr },
-          },
-        )
-        .then((response) => {
-          localStorage.setItem('accessToken', response.data.data.tokens.accessToken);
-        })
-        .catch((err) => console.log(err));
+      // await axios
+      //   .post(
+      //     'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
+      //     { refreshToken: localStorage.getItem('refreshToken') },
+      //     {
+      //       headers: { Authorization: AuthStr },
+      //     },
+      //   )
+      //   .then((response) => {
+      //     localStorage.setItem('accessToken', response.data.data.tokens.accessToken);
+      //   })
+      //   .catch((err) => console.log(err));
 
       await axios
         .get('https://dev-api.nurture.vinova.sg/api/v1/admins/articles/', {

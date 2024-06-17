@@ -21,6 +21,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import styles from './CreateStaticContent.module.css';
+import instance from '../../api/AxiosConfig';
+import Loading from '../Loading/Loading';
 
 CreateStaticContent.propTypes = {};
 
@@ -57,7 +59,7 @@ function CreateStaticContent({
       slug: yup.string().required('This field is required.'),
       category: yup.string().required('This field is required.'),
       status: yup.string().required('This field is required.'),
-      required: yup.boolean(),
+      isRequired: yup.boolean(),
       hasContent: yup.boolean(),
       content: yup.string(),
     })
@@ -80,7 +82,34 @@ function CreateStaticContent({
   }, [selectedRow, reset]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const USER_TOKEN = localStorage.getItem('accessToken');
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [body, setBody] = useState('');
+  const AuthStr = 'Bearer ' + USER_TOKEN;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmitOnClick = async (data: any) => {
+    setIsLoading(true);
+    await instance
+      .post('admins/static-content', data, {
+        headers: { Authorization: AuthStr },
+      })
+      .then(function (response) {
+        return response.data;
+        // toast.success('Successed');
+      })
+      .then((data) => {
+        return data;
+        // localStorage.setItem('accessToken', data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    setIsLoading(false);
     console.log(data);
     reset();
   };
@@ -115,7 +144,7 @@ function CreateStaticContent({
               </button>
             </div>
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(handleSubmitOnClick)}
               className={styles.form}
             >
               <div className={styles.form_control}>
@@ -204,7 +233,7 @@ function CreateStaticContent({
                 <FormControlLabel
                   control={<Checkbox />}
                   label='Required'
-                  {...register('required')}
+                  {...register('isRequired')}
                   defaultChecked={false}
                 />
                 <FormControlLabel
@@ -235,6 +264,7 @@ function CreateStaticContent({
           </Box>
         </Fade>
       </Modal>
+      <Loading open={isLoading} />
     </div>
   );
 }
