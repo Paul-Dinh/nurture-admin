@@ -17,7 +17,7 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import styles from './CreateStaticContent.module.css';
@@ -50,6 +50,15 @@ function CreateStaticContent({
   const handleClose = () => setOpenUpdateForm(false);
 
   const [title, setTitle] = useState('');
+  const [categoryValue, setCategoryValue] = useState('');
+  const [statusValue, setStatusValue] = useState('');
+
+  const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
+    setCategoryValue(e.target.value);
+  };
+  const handleStatusValueChange = (e: { target: { value: SetStateAction<string> } }) => {
+    setStatusValue(e.target.value);
+  };
 
   const schema = yup
     .object({
@@ -57,7 +66,7 @@ function CreateStaticContent({
       slug: yup.string().required('This field is required.'),
       category: yup.string().required('This field is required.'),
       status: yup.string().required('This field is required.'),
-      required: yup.boolean(),
+      isRequired: yup.boolean(),
       hasContent: yup.boolean(),
       content: yup.string(),
     })
@@ -76,6 +85,8 @@ function CreateStaticContent({
     if (selectedRow) {
       reset(selectedRow);
       setTitle(selectedRow.title);
+      setCategoryValue(selectedRow.category);
+      setStatusValue(selectedRow.status);
     }
   }, [selectedRow, reset]);
 
@@ -176,10 +187,14 @@ function CreateStaticContent({
                     Category
                   </FormLabel>
                   <FormControl error={!!errors.category}>
-                    <Select {...register('category')}>
+                    <Select
+                      {...register('category')}
+                      value={categoryValue}
+                      onChange={handleCategoryValueChange}
+                    >
                       <MenuItem value={'Term'}>Term</MenuItem>
                       <MenuItem value={'Payment Policy'}>Payment Policy</MenuItem>
-                      <MenuItem value={'Private & Security'}>Private & Security</MenuItem>
+                      <MenuItem value={'Privacy & Security'}>Private & Security</MenuItem>
                     </Select>
                     <FormHelperText error={!!errors.category}>
                       {errors.category?.message}
@@ -191,7 +206,11 @@ function CreateStaticContent({
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Status</FormLabel>
                 <FormControl>
-                  <Select {...register('status')}>
+                  <Select
+                    {...register('status')}
+                    value={statusValue}
+                    onChange={handleStatusValueChange}
+                  >
                     <MenuItem value={'Show'}>Show</MenuItem>
                     <MenuItem value={'Hide'}>Hide</MenuItem>
                   </Select>
@@ -203,13 +222,12 @@ function CreateStaticContent({
                 style={{ marginLeft: '16px' }}
               >
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={<Checkbox defaultChecked={selectedRow.isRequired} />}
                   label='Required'
-                  {...register('required')}
-                  defaultChecked={false}
+                  {...register('isRequired')}
                 />
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={<Checkbox defaultChecked={selectedRow.hasContent} />}
                   label='Has content'
                   {...register('hasContent')}
                 />
