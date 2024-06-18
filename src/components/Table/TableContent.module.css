@@ -1,7 +1,7 @@
 .wrapper {
   height: calc(100vh - 64px);
   position: relative;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   padding: 16px;
   background-color: rgb(247, 248, 249);
   margin-left: 65px;
