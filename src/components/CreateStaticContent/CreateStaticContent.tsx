@@ -21,6 +21,8 @@ import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import styles from './CreateStaticContent.module.css';
+import axios from 'axios';
+import ConfirmUpdateForm from '../ConfirmUpdateForm/ConfirmUpdateForm';
 
 CreateStaticContent.propTypes = {};
 
@@ -52,6 +54,8 @@ function CreateStaticContent({
   const [title, setTitle] = useState('');
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
+  const [openConfirmUpdateForm, setOpenConfirmUpdateForm] = useState(false);
+  // const [data, setData] = useState({});
 
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setCategoryValue(e.target.value);
@@ -93,12 +97,38 @@ function CreateStaticContent({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
     console.log(data);
+
+    const updateData = {
+      title: data.title,
+      category: data.category,
+      status: data.status,
+      isRequired: data.isRequired,
+      hasContent: data.hasContent,
+      content: data.content,
+    };
+
+    const USER_TOKEN = localStorage.getItem('accessToken');
+    const AuthStr = 'Bearer ' + USER_TOKEN;
+
+    axios
+      .put(
+        'https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + selectedRow.slug,
+        { ...updateData },
+        {
+          headers: { Authorization: AuthStr },
+        },
+      )
+      .then((response) => console.log(response.data.data))
+      .catch((err) => console.log(err));
+
     setOpenUpdateForm(false);
     reset();
   };
 
+  const handleUpdateConfirm = () => {};
+
   return (
-    <div>
+    <>
       <Modal
         aria-labelledby='transition-modal-title'
         aria-describedby='transition-modal-description'
@@ -127,6 +157,7 @@ function CreateStaticContent({
               </button>
             </div>
             <form
+              // onSubmit={handleSubmit(onSubmit)}
               onSubmit={handleSubmit(onSubmit)}
               className={styles.form}
             >
@@ -246,6 +277,7 @@ function CreateStaticContent({
                 <Button
                   variant='contained'
                   type='submit'
+                  // onClick={() => setOpenConfirmUpdateForm(true)}
                 >
                   Submit
                 </Button>
@@ -254,7 +286,13 @@ function CreateStaticContent({
           </Box>
         </Fade>
       </Modal>
-    </div>
+
+      <ConfirmUpdateForm
+        isOpen={openConfirmUpdateForm}
+        setOpenConfirmUpdateForm={setOpenConfirmUpdateForm}
+        handleUpdateConfirm={handleUpdateConfirm}
+      />
+    </>
   );
 }
 

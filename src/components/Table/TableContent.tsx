@@ -12,6 +12,7 @@ import CreateStaticContent from '../CreateStaticContent/CreateStaticContent.tsx'
 import DeleteForm from '../DeleteForm/DeleteForm.tsx';
 import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
+import axios from 'axios';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -35,15 +36,29 @@ function TableContent({ head, body, setBody }: Props) {
     setSelectedRow(item);
   };
 
-  const handleDeleteClick = (idx: number) => {
+  const handleDeleteClick = (idx: number, item: TableRowData) => {
     setOpenDeleteForm(true);
     setIndex(idx);
+    setSelectedRow(item);
   };
 
   const handleDeleteConfirm = () => {
     const updatedBody = [...body];
     updatedBody.splice(index, 1);
     setBody(updatedBody);
+
+    const USER_TOKEN = localStorage.getItem('accessToken');
+    const AuthStr = 'Bearer ' + USER_TOKEN;
+
+    axios
+      .delete(
+        'https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + selectedRow.slug,
+        {
+          headers: { Authorization: AuthStr },
+        },
+      )
+      .then((response) => console.log(response.data.data))
+      .catch((err) => console.log(err));
     setOpenDeleteForm(false);
   };
 
@@ -71,8 +86,11 @@ function TableContent({ head, body, setBody }: Props) {
             border: '1px solid #b3b9c4',
           }}
         >
-          <Table sx={{ minWidth: 650 }}>
-            <TableHead>
+          <Table
+            sx={{ minWidth: 650 }}
+            size='small'
+          >
+            <TableHead sx={{ height: 60 }}>
               <TableRow className={styles.table_header_row}>
                 {head.map((item) => (
                   <TableCell
@@ -115,20 +133,30 @@ function TableContent({ head, body, setBody }: Props) {
                       key={field}
                       className={styles.table_cell}
                     >
-                      {field === 'status' ? (
-                        <>
-                          <StatusPoint status={capitalizeFirstLetter(item.status)} />
-                          {capitalizeFirstLetter(item.status)}
-                        </>
-                      ) : field === 'required' ? (
-                        item['isRequired'] ? (
-                          'Yes'
-                        ) : (
-                          'No'
-                        )
-                      ) : (
-                        item[field]
-                      )}
+                      {(() => {
+                        if (field === 'status') {
+                          return (
+                            <>
+                              <StatusPoint status={capitalizeFirstLetter(item.status)} />
+                              {capitalizeFirstLetter(item.status)}
+                            </>
+                          );
+                        } else if (field === 'required') {
+                          return item['isRequired'] ? 'Yes' : 'No';
+                        } else if (field === 'image') {
+                          return (
+                            <img
+                              src={item[field]}
+                              alt='image'
+                              width='30px'
+                            />
+                          );
+                        } else if (field === 'createdAt') {
+                          return new Date(item[field]).toLocaleString();
+                        } else {
+                          return item[field];
+                        }
+                      })()}
                     </TableCell>
                   ))}
                   <TableCell
@@ -163,7 +191,7 @@ function TableContent({ head, body, setBody }: Props) {
                       </span>
                       <span
                         className={styles.delete_btn}
-                        onClick={() => handleDeleteClick(idx)}
+                        onClick={() => handleDeleteClick(idx, item)}
                       >
                         <svg
                           viewBox='0 0 34 26'
