@@ -95,34 +95,7 @@ function CreateStaticContent({
   }, [selectedRow, reset]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [isLoading, setIsLoading] = useState(false);
-
-  const USER_TOKEN = localStorage.getItem('accessToken');
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [body, setBody] = useState('');
-  const AuthStr = 'Bearer ' + USER_TOKEN;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmitOnClick = async (data: any) => {
-    setIsLoading(true);
-    await instance
-      .post('admins/static-content', data, {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        return response.data;
-        // toast.success('Successed');
-      })
-      .then((data) => {
-        return data;
-        // localStorage.setItem('accessToken', data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    setIsLoading(false);
+  const onSubmit = (data: any) => {
     console.log(data);
 
     const updateData = {
