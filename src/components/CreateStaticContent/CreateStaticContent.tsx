@@ -157,7 +157,6 @@ function CreateStaticContent({
               </button>
             </div>
             <form
-              // onSubmit={handleSubmit(onSubmit)}
               onSubmit={handleSubmit(onSubmit)}
               className={styles.form}
             >
