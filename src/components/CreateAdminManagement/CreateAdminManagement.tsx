@@ -109,16 +109,8 @@ function CreateAdminManagement({
         headers: { Authorization: AuthStr },
       })
       .then(function (response) {
-        // toast.success('Admin added successfully!', {
-        //   position: 'bottom-left',
-        //   autoClose: 15000,
-        // });
         return response.data;
       })
-      // .then((data) => {
-      //   return data;
-      //   // localStorage.setItem('accessToken', data);
-      // })
       .catch(function (error) {
         console.log(error);
       });
@@ -127,6 +119,36 @@ function CreateAdminManagement({
     console.log(data);
     reset();
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const onSubmit = (data: any) => {
+  //   console.log(data);
+
+  //   const updateData = {
+  //     username: data.username,
+  //     firstname: data.firstname,
+  //     lastname: data.lastname,
+  //     email: data.email,
+  //     status: data.status,
+  //     password: data.password,
+  //   };
+
+  //   const USER_TOKEN = localStorage.getItem('accessToken');
+  //   const AuthStr = 'Bearer ' + USER_TOKEN;
+
+  //   instance
+  //     .put(
+  //       'https://dev-api.nurture.vinova.sg/api/v1/admins/admins/' + selectedRow.id,
+  //       { ...updateData },
+  //       {
+  //         headers: { Authorization: AuthStr },
+  //       },
+  //     )
+  //     .then((response) => console.log(response.data.data))
+  //     .catch((err) => console.log(err));
+
+  //   setOpenUpdateForm(false);
+  //   reset();
+  // };
 
   return (
     <div>
@@ -161,6 +183,7 @@ function CreateAdminManagement({
             <Divider />
             <form
               onSubmit={handleSubmit(handleSubmitOnClick)}
+              // onSubmit={handleSubmit(onSubmit)}
               className={styles.form}
             >
               <div className={styles.form_control}>

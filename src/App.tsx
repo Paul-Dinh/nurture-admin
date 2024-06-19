@@ -61,7 +61,7 @@ function App() {
               }
             ></Route>
             <Route
-              path='/categories'
+              path='/category'
               element={
                 <PrivateRoute>
                   <Categories />

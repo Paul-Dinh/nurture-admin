@@ -20,11 +20,11 @@ import {
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import styles from './CreateArticle.module.css';
+import styles from './CreatePD.module.css';
 // import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Loading from '../Loading/Loading';
 import instance from '../../api/AxiosConfig';
-CreateArticle.propTypes = {};
+CreatePD.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -40,7 +40,7 @@ const style = {
   borderRadius: 1,
 };
 
-function CreateArticle({
+function CreatePD({
   isOpen,
   setOpenUpdateForm,
   selectedRow,
@@ -61,19 +61,14 @@ function CreateArticle({
   const handleStatusValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setStatusValue(e.target.value);
   };
-  // const [file, setFile] = useState('');
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const handleFileChange = (event: any) => {
-  //   setFile(event.target.files[0]);
-  // };
 
   const schema = yup
     .object({
       title: yup.string().required('This field is required.'),
       author: yup.string().required('This field is required.'),
       status: yup.string().required('This field is required.'),
-      categoryId: yup.string().required('This field is required.'),
-      timeToRead: yup.string().required('This field is required.'),
+      categoryID: yup.string().required('This field is required.'),
+      timetoRead: yup.string().required('This field is required.'),
       picture: yup.string(),
       content: yup.string(),
     })
@@ -122,22 +117,6 @@ function CreateArticle({
     reset();
   };
 
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    instance
-      .get('admins/categories?page=1&limit=25', {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        setData(response.data);
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
-
   return (
     <div>
       <Modal
@@ -161,7 +140,7 @@ function CreateArticle({
                 variant='h6'
                 component='h2'
               >
-                Create Article
+                Create PD Session
               </Typography>
               <button onClick={handleClose}>
                 <CloseIcon sx={{ cursor: 'pointer' }} />
@@ -227,37 +206,38 @@ function CreateArticle({
 
               <div className={styles.form_control}>
                 <FormLabel
-                  error={!!errors.categoryId}
+                  error={!!errors.categoryID}
                   style={{ marginBottom: '6px' }}
                 >
                   Category
                 </FormLabel>
-                <FormControl error={!!errors.categoryId}>
+                <FormControl error={!!errors.categoryID}>
                   <Select
-                    {...register('categoryId')}
+                    {...register('categoryID')}
                     value={categoryValue}
                     onChange={handleCategoryValueChange}
                   >
-                    {/* {data.map((item) => (
-
-                    ))} */}
+                    <MenuItem value={'Postnatal care'}>Postnatal care</MenuItem>
+                    <MenuItem value={'Nutrition'}>Nutrition</MenuItem>
+                    <MenuItem value={'Labour'}>Labour</MenuItem>
+                    <MenuItem value={'Prenatal'}>Prenatal</MenuItem>
                   </Select>
                 </FormControl>
               </div>
 
               <div className={styles.form_control}>
                 <FormLabel
-                  error={!!errors.timeToRead}
+                  error={!!errors.timetoRead}
                   style={{ marginBottom: '6px' }}
                 >
                   Duration (Ex: 3 mins)
                 </FormLabel>
                 <TextField
-                  {...register('timeToRead')}
+                  {...register('timetoRead')}
                   id='outlined-basic'
                   variant='outlined'
-                  error={!!errors.timeToRead}
-                  helperText={errors.timeToRead?.message}
+                  error={!!errors.timetoRead}
+                  helperText={errors.timetoRead?.message}
                 />
               </div>
               {/* 
@@ -269,27 +249,6 @@ function CreateArticle({
                   Image
                 </FormLabel>
               </div> */}
-              {/* <Box mt={2}>
-                <Button
-                  variant='contained'
-                  component='label'
-                >
-                  Upload File
-                  <input
-                    type='file'
-                    hidden
-                    onChange={handleFileChange}
-                  />
-                </Button>
-                {file && (
-                  <Typography
-                    variant='body1'
-                    component='p'
-                  >
-                    File chosen: {file}
-                  </Typography>
-                )}
-              </Box> */}
 
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>
@@ -317,4 +276,4 @@ function CreateArticle({
   );
 }
 
-export default CreateArticle;
+export default CreatePD;
