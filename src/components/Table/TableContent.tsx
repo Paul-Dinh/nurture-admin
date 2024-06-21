@@ -29,6 +29,7 @@ function TableContent({ head, body, setBody }: Props) {
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
   const [selectedRow, setSelectedRow] = useState({});
+  const [slug, setSlug] = useState('');
 
   const handleUpdateClick = (idx: number, item: TableRowData) => {
     setOpenUpdateForm(true);
@@ -39,7 +40,7 @@ function TableContent({ head, body, setBody }: Props) {
   const handleDeleteClick = (idx: number, item: TableRowData) => {
     setOpenDeleteForm(true);
     setIndex(idx);
-    setSelectedRow(item);
+    setSlug(item.slug);
   };
 
   const handleDeleteConfirm = () => {
@@ -51,14 +52,12 @@ function TableContent({ head, body, setBody }: Props) {
     const AuthStr = 'Bearer ' + USER_TOKEN;
 
     axios
-      .delete(
-        'https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + selectedRow.slug,
-        {
-          headers: { Authorization: AuthStr },
-        },
-      )
+      .delete('https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + slug, {
+        headers: { Authorization: AuthStr },
+      })
       .then((response) => console.log(response.data.data))
       .catch((err) => console.log(err));
+
     setOpenDeleteForm(false);
   };
 
