@@ -29,6 +29,8 @@ import './SideBar.css';
 import axios from 'axios';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
 import CreateArticle from '../CreateArticle/CreateArticle';
+import CreatePD from '../CreatePD/CreatePD';
+import CreateCategory from '../CreateCategory/CreateCategory';
 import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
 
 const drawerWidth = 240;
@@ -120,6 +122,8 @@ export default function Sidebar() {
   const [openCreateStatic, setOpenCreateStatic] = useState(false);
   const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
   const [openCreateArticle, setOpenCreateArticle] = useState(false);
+  const [openCreatePD, setOpenCreatePD] = useState(false);
+  const [openCreateCategory, setOpenCreateCategory] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -134,8 +138,8 @@ export default function Sidebar() {
     if (name === 'Static Content') setOpenCreateStatic(true);
     if (name === 'Admin Management') setOpenCreateAdmin(true);
     if (name === 'Article') setOpenCreateArticle(true);
-    if (name === 'PD Session') setOpenCreateAdmin(true);
-    if (name === 'Categories') setOpenCreateAdmin(true);
+    if (name === 'PD Session') setOpenCreatePD(true);
+    if (name === 'Category') setOpenCreateCategory(true);
   };
 
   const [filter, setFilter] = useState('');
@@ -320,6 +324,16 @@ export default function Sidebar() {
       <CreateArticle
         isOpen={openCreateArticle}
         setOpenUpdateForm={setOpenCreateArticle}
+        selectedRow={{}}
+      />
+      <CreatePD
+        isOpen={openCreatePD}
+        setOpenUpdateForm={setOpenCreatePD}
+        selectedRow={{}}
+      />
+      <CreateCategory
+        isOpen={openCreateCategory}
+        setOpenUpdateForm={setOpenCreateCategory}
         selectedRow={{}}
       />
     </>

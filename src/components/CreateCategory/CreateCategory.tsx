@@ -13,18 +13,17 @@ import {
   Modal,
   Select,
   TextField,
-  TextareaAutosize,
   Typography,
   Divider,
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import styles from './CreateArticle.module.css';
+import styles from './CreateCategory.module.css';
 // import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Loading from '../Loading/Loading';
 import instance from '../../api/AxiosConfig';
-CreateArticle.propTypes = {};
+CreatePD.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -40,7 +39,7 @@ const style = {
   borderRadius: 1,
 };
 
-function CreateArticle({
+function CreatePD({
   isOpen,
   setOpenUpdateForm,
   selectedRow,
@@ -50,32 +49,20 @@ function CreateArticle({
   selectedRow: TableRowData;
 }) {
   const handleClose = () => setOpenUpdateForm(false);
-  const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [title, setTitle] = useState('');
-  const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
-    setCategoryValue(e.target.value);
-  };
   const handleStatusValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setStatusValue(e.target.value);
   };
-  // const [file, setFile] = useState('');
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const handleFileChange = (event: any) => {
-  //   setFile(event.target.files[0]);
-  // };
 
   const schema = yup
     .object({
       title: yup.string().required('This field is required.'),
-      author: yup.string().required('This field is required.'),
+      name: yup.string().required('This field is required.'),
       status: yup.string().required('This field is required.'),
-      categoryId: yup.string().required('This field is required.'),
-      timeToRead: yup.string().required('This field is required.'),
       picture: yup.string(),
-      content: yup.string(),
     })
     .required();
 
@@ -107,7 +94,7 @@ function CreateArticle({
   const handleSubmitOnClick = async (data: any) => {
     setIsLoading(true);
     await instance
-      .post('admins/articles', data, {
+      .post('admins/categories', data, {
         headers: { Authorization: AuthStr },
       })
       .then(function (response) {
@@ -121,21 +108,6 @@ function CreateArticle({
     console.log(data);
     reset();
   };
-
-  // const [data, setData] = useState();
-
-  useEffect(() => {
-    instance
-      .get('admins/categories?page=1&limit=25', {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
 
   return (
     <div>
@@ -160,7 +132,7 @@ function CreateArticle({
                 variant='h6'
                 component='h2'
               >
-                Create Article
+                Create Category
               </Typography>
               <button onClick={handleClose}>
                 <CloseIcon sx={{ cursor: 'pointer' }} />
@@ -190,17 +162,17 @@ function CreateArticle({
 
               <div className={styles.form_control}>
                 <FormLabel
-                  error={!!errors.author}
+                  error={!!errors.name}
                   style={{ marginBottom: '6px' }}
                 >
-                  Author
+                  Name
                 </FormLabel>
                 <TextField
-                  {...register('author')}
+                  {...register('name')}
                   id='outlined-basic'
                   variant='outlined'
-                  error={!!errors.author}
-                  helperText={errors.author?.message}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
                 />
               </div>
 
@@ -217,49 +189,12 @@ function CreateArticle({
                     value={statusValue}
                     onChange={handleStatusValueChange}
                   >
-                    <MenuItem value={'Published'}>Published</MenuItem>
-                    <MenuItem value={'Unpublished'}>Unpublished</MenuItem>
-                    <MenuItem value={'Draft'}>Draft</MenuItem>
+                    <MenuItem value={'active'}>Active</MenuItem>
+                    <MenuItem value={'inactive'}>Inactive</MenuItem>
                   </Select>
                 </FormControl>
               </div>
 
-              <div className={styles.form_control}>
-                <FormLabel
-                  error={!!errors.categoryId}
-                  style={{ marginBottom: '6px' }}
-                >
-                  Category
-                </FormLabel>
-                <FormControl error={!!errors.categoryId}>
-                  <Select
-                    {...register('categoryId')}
-                    value={categoryValue}
-                    onChange={handleCategoryValueChange}
-                  >
-                    {/* {data.map((item) => (
-
-                    ))} */}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className={styles.form_control}>
-                <FormLabel
-                  error={!!errors.timeToRead}
-                  style={{ marginBottom: '6px' }}
-                >
-                  Duration (Ex: 3 mins)
-                </FormLabel>
-                <TextField
-                  {...register('timeToRead')}
-                  id='outlined-basic'
-                  variant='outlined'
-                  error={!!errors.timeToRead}
-                  helperText={errors.timeToRead?.message}
-                />
-              </div>
-              {/* 
               <div className={styles.form_control}>
                 <FormLabel
                   error={!!errors.picture}
@@ -267,36 +202,6 @@ function CreateArticle({
                 >
                   Image
                 </FormLabel>
-              </div> */}
-              {/* <Box mt={2}>
-                <Button
-                  variant='contained'
-                  component='label'
-                >
-                  Upload File
-                  <input
-                    type='file'
-                    hidden
-                    onChange={handleFileChange}
-                  />
-                </Button>
-                {file && (
-                  <Typography
-                    variant='body1'
-                    component='p'
-                  >
-                    File chosen: {file}
-                  </Typography>
-                )}
-              </Box> */}
-
-              <div className={styles.form_control}>
-                <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>
-
-                <TextareaAutosize
-                  minRows={10}
-                  {...register('content')}
-                />
               </div>
 
               <div className={styles.submit_btn}>
@@ -316,4 +221,4 @@ function CreateArticle({
   );
 }
 
-export default CreateArticle;
+export default CreatePD;

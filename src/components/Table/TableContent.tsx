@@ -8,11 +8,12 @@ import {
   TableRow,
 } from '@mui/material';
 import React, { useState } from 'react';
-import CreateStaticContent from '../CreateStaticContent/CreateStaticContent.tsx';
+// import CreateStaticContent from '../CreateStaticContent/CreateStaticContent.tsx';
 import DeleteForm from '../DeleteForm/DeleteForm.tsx';
 import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
 import axios from 'axios';
+import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -30,6 +31,7 @@ function TableContent({ head, body, setBody }: Props) {
   const [index, setIndex] = useState(-1);
   const [selectedRow, setSelectedRow] = useState({});
   const [slug, setSlug] = useState('');
+  const [id, setId] = useState('');
 
   const handleUpdateClick = (idx: number, item: TableRowData) => {
     setOpenUpdateForm(true);
@@ -41,6 +43,7 @@ function TableContent({ head, body, setBody }: Props) {
     setOpenDeleteForm(true);
     setIndex(idx);
     setSlug(item.slug);
+    setId(item.id);
   };
 
   const handleDeleteConfirm = () => {
@@ -50,6 +53,14 @@ function TableContent({ head, body, setBody }: Props) {
 
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
+
+    axios
+      .delete('https://dev-api.nurture.vinova.sg/api/v1/admins/admins/' + id, {
+        headers: { Authorization: AuthStr },
+      })
+      .then((response) => console.log(response.data.data))
+      .catch((err) => console.log(err));
+    setOpenDeleteForm(false);
 
     axios
       .delete('https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + slug, {
@@ -244,7 +255,12 @@ function TableContent({ head, body, setBody }: Props) {
         />
       </div>
 
-      <CreateStaticContent
+      {/* <CreateStaticContent
+        isOpen={openUpdateForm}
+        setOpenUpdateForm={setOpenUpdateForm}
+        selectedRow={selectedRow}
+      /> */}
+      <CreateAdminManagement
         isOpen={openUpdateForm}
         setOpenUpdateForm={setOpenUpdateForm}
         selectedRow={selectedRow}
