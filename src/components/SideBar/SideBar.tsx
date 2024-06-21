@@ -1,32 +1,32 @@
-import * as React from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles';
+import * as React from 'react';
 // import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import Filter from '../Filter/Filter';
-import data from '../../data/data';
-import { NavLink } from 'react-router-dom';
-import SearchBar from '../SearchBar/SearchBar';
-import InfoBar from '../InfoBar/InfoBar';
-import { useState } from 'react';
-import './SideBar.css';
 import { Button } from '@mui/material';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import data from '../../data/data';
+import Filter from '../Filter/Filter';
+import InfoBar from '../InfoBar/InfoBar';
+import SearchBar from '../SearchBar/SearchBar';
+import './SideBar.css';
 // import Loading from '../Loading/Loading';
-import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
+import axios from 'axios';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
 import CreateArticle from '../CreateArticle/CreateArticle';
 import CreatePD from '../CreatePD/CreatePD';
@@ -141,6 +141,42 @@ export default function Sidebar() {
     if (name === 'Category') setOpenCreateCategory(true);
   };
 
+  const [filter, setFilter] = useState('');
+
+  React.useEffect(() => {
+    const USER_TOKEN = localStorage.getItem('accessToken');
+    const AuthStr = 'Bearer ' + USER_TOKEN;
+
+    axios
+      .get(`https://dev-api.nurture.vinova.sg/api/v1/admins/static-content?${filter}`, {
+        headers: { Authorization: AuthStr },
+      })
+      .then((response) => console.log(response.data.data))
+      .catch((err) => console.log(err));
+  }, [filter]);
+
+  const handleSearchChange = (newFilter: string) => {
+    setFilter(newFilter);
+  };
+
+  const [filter, setFilter] = useState('');
+
+  React.useEffect(() => {
+    const USER_TOKEN = localStorage.getItem('accessToken');
+    const AuthStr = 'Bearer ' + USER_TOKEN;
+
+    axios
+      .get(`https://dev-api.nurture.vinova.sg/api/v1/admins/static-content?${filter}`, {
+        headers: { Authorization: AuthStr },
+      })
+      .then((response) => console.log(response.data.data))
+      .catch((err) => console.log(err));
+  }, [filter]);
+
+  const handleSearchChange = (newFilter: string) => {
+    setFilter(newFilter);
+  };
+
   return (
     <>
       <Box sx={{ display: 'flex' }}>
@@ -175,7 +211,7 @@ export default function Sidebar() {
                 {name}
               </Typography>
               <div className='search-filter'>
-                <SearchBar />
+                <SearchBar onSubmit={handleSearchChange} />
                 {/* <button className='filter'>
                 <FilterAltOutlinedIcon />
                 Filter

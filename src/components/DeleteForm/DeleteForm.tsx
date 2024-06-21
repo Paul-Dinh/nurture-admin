@@ -1,7 +1,5 @@
 import { Box, Button, Modal } from '@mui/material';
 import styles from './DeleteForm.module.css';
-// import instance from '../../api/AxiosConfig';
-// import { useState, useEffect } from 'react';
 DeleteForm.propTypes = {};
 
 function DeleteForm({
@@ -28,10 +26,43 @@ function DeleteForm({
   };
 
   const handleClose = () => setOpenDeleteForm(false);
-
   const handleDeleteClick = () => {
     handleDeleteConfirm();
   };
+
+  // const [data, setData] = useState();
+
+  // useEffect(() => {
+  //   instance
+  //     .get('admins/admins', {
+  //       headers: { Authorization: AuthStr },
+  //     })
+  //     .then(function (response) {
+  //       setData(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  // const USER_TOKEN = localStorage.getItem('accessToken');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const AuthStr = 'Bearer ' + USER_TOKEN;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const handleDeleteClick = async (id: any) => {
+  //   await instance
+  //     .delete('admins/admins' + id)
+  //     // .delete(`admins/admins/${id}`, id)
+  //     .then(function (response) {
+  //       return response.data;
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  //   handleDeleteConfirm();
+  // };
 
   return (
     <div>

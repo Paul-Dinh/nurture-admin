@@ -1,14 +1,27 @@
 // import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './SearchBar.css';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
-function SearchBar() {
-  const [search, setSearch] = useState();
+function SearchBar({ onSubmit }: { onSubmit: Function }) {
+  const [search, setSearch] = useState('');
+  const typingTimeOutRef = useRef(0);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const changeSearch = (event: any) => {
-    setSearch(event.target.value);
-    console.log(event.target.value);
+    const value = event.target.value;
+    setSearch(value);
+    // console.log(value);
+
+    if (!onSubmit) return;
+
+    if (typingTimeOutRef.current) {
+      clearTimeout(typingTimeOutRef.current);
+    }
+
+    typingTimeOutRef.current = setTimeout(() => {
+      onSubmit(value ? `search=${value}` : '');
+    }, 500);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
