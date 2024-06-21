@@ -122,7 +122,7 @@ function CreateArticle({
     reset();
   };
 
-  const [data, setData] = useState();
+  // const [data, setData] = useState();
 
   useEffect(() => {
     instance
@@ -130,7 +130,6 @@ function CreateArticle({
         headers: { Authorization: AuthStr },
       })
       .then(function (response) {
-        setData(response.data);
         console.log(response.data);
       })
       .catch(function (error) {

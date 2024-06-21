@@ -31,6 +31,7 @@ import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagemen
 import CreateArticle from '../CreateArticle/CreateArticle';
 import CreatePD from '../CreatePD/CreatePD';
 import CreateCategory from '../CreateCategory/CreateCategory';
+import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
 
 const drawerWidth = 240;
 // const miniDrawerWidth = 60;
@@ -139,24 +140,6 @@ export default function Sidebar() {
     if (name === 'Article') setOpenCreateArticle(true);
     if (name === 'PD Session') setOpenCreatePD(true);
     if (name === 'Category') setOpenCreateCategory(true);
-  };
-
-  const [filter, setFilter] = useState('');
-
-  React.useEffect(() => {
-    const USER_TOKEN = localStorage.getItem('accessToken');
-    const AuthStr = 'Bearer ' + USER_TOKEN;
-
-    axios
-      .get(`https://dev-api.nurture.vinova.sg/api/v1/admins/static-content?${filter}`, {
-        headers: { Authorization: AuthStr },
-      })
-      .then((response) => console.log(response.data.data))
-      .catch((err) => console.log(err));
-  }, [filter]);
-
-  const handleSearchChange = (newFilter: string) => {
-    setFilter(newFilter);
   };
 
   const [filter, setFilter] = useState('');
