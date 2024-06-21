@@ -55,7 +55,6 @@ function CreateStaticContent({
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
   const [openConfirmUpdateForm, setOpenConfirmUpdateForm] = useState(false);
-  // const [data, setData] = useState({});
 
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setCategoryValue(e.target.value);
@@ -276,7 +275,6 @@ function CreateStaticContent({
                 <Button
                   variant='contained'
                   type='submit'
-                  // onClick={() => setOpenConfirmUpdateForm(true)}
                 >
                   Submit
                 </Button>
