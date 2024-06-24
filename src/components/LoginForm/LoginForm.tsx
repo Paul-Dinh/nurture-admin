@@ -12,9 +12,10 @@ import {
 import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import Loading from '../Loading/Loading';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './LoginForm.module.css';
 
 LoginForm.propTypes = {};
@@ -37,8 +38,9 @@ function LoginForm() {
     resolver: yupResolver(schema),
   });
 
+  const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,7 +48,7 @@ function LoginForm() {
   };
 
   const handleSubmitOnclick = async (data: { username: string; password: string }) => {
-    setIsLoading(true);
+    dispatch(loadingOn());
 
     await axios
       .post('https://dev-api.nurture.vinova.sg/api/v1/admins/auth/login', {
@@ -64,7 +66,7 @@ function LoginForm() {
         console.log(error);
       });
 
-    setIsLoading(false);
+    dispatch(loadingOff());
     navigate('/static');
     reset();
   };
@@ -137,7 +139,6 @@ function LoginForm() {
           </button>
         </div>
       </form>
-      <Loading open={isLoading} />
     </>
   );
 }

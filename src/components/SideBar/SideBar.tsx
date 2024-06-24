@@ -27,10 +27,12 @@ import SearchBar from '../SearchBar/SearchBar';
 import './SideBar.css';
 // import Loading from '../Loading/Loading';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { sideBarOff, sideBarOn } from '../../features/margin/marginSlice';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
 import CreateArticle from '../CreateArticle/CreateArticle';
-import CreatePD from '../CreatePD/CreatePD';
 import CreateCategory from '../CreateCategory/CreateCategory';
+import CreatePD from '../CreatePD/CreatePD';
 import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
 
 const drawerWidth = 240;
@@ -160,6 +162,9 @@ export default function Sidebar() {
     setFilter(newFilter);
   };
 
+  // const marginTest = useSelector(marginValue);
+  const dispatch = useDispatch();
+
   return (
     <>
       <Box sx={{ display: 'flex' }}>
@@ -176,7 +181,11 @@ export default function Sidebar() {
             <IconButton
               color='inherit'
               aria-label='open drawer'
-              onClick={handleDrawerOpen}
+              onClick={() => {
+                handleDrawerOpen();
+                dispatch(sideBarOn());
+                // console.log(marginTest);
+              }}
               edge='start'
               sx={{
                 marginRight: 5,
@@ -239,7 +248,13 @@ export default function Sidebar() {
               >
                 NurtureWave
               </Typography>
-              <IconButton onClick={handleDrawerClose}>
+              <IconButton
+                onClick={() => {
+                  handleDrawerClose();
+                  dispatch(sideBarOff());
+                  // console.log(marginTest);
+                }}
+              >
                 {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
               </IconButton>
             </div>

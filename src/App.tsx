@@ -9,8 +9,13 @@ import Static from './pages/Static.tsx';
 import DraftContainer from './pages/draft/DraftContainer.tsx';
 import PrivateRoute from './routes/PrivateRoute';
 import ThemeProvider from './theme/ThemeProvider.tsx';
+import Loading from './components/Loading/Loading.tsx';
+import { useSelector } from 'react-redux';
+import { loading } from './features/loader/loaderSlice.ts';
 
 function App() {
+  const isLoading = useSelector(loading);
+
   return (
     <ThemeProvider>
       <div className='App'>
@@ -70,6 +75,8 @@ function App() {
             ></Route>
           </Routes>
         </BrowserRouter>
+
+        <Loading open={isLoading} />
       </div>
     </ThemeProvider>
   );

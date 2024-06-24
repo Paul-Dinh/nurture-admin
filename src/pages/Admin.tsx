@@ -1,20 +1,21 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Loading from '../components/Loading/Loading';
+import { useDispatch } from 'react-redux';
 import TableContent from '../components/Table/TableContent';
+import { loadingOff, loadingOn } from '../features/loader/loaderSlice';
 
 function Admin() {
   const head = ['username', 'firstName', 'lastName', 'email', 'role', 'status', 'action'];
 
   const [body, setBody] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const USER_TOKEN = localStorage.getItem('accessToken');
   const AuthStr = 'Bearer ' + USER_TOKEN;
 
   useEffect(() => {
     async function handleLoading() {
-      setIsLoading(true);
+      dispatch(loadingOn());
 
       // await axios
       //   .post(
@@ -36,7 +37,7 @@ function Admin() {
         .then((response) => setBody(response.data.data))
         .catch((err) => console.log(err));
 
-      setIsLoading(false);
+      dispatch(loadingOff());
     }
 
     handleLoading();
@@ -46,8 +47,6 @@ function Admin() {
 
   return (
     <>
-      <Loading open={isLoading} />
-
       <TableContent
         head={head}
         body={body}
