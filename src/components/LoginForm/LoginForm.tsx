@@ -56,6 +56,7 @@ function LoginForm() {
         password: data.password,
       })
       .then(function (response) {
+        localStorage.setItem('username', response.data.data.admin.username);
         return response.data.data.tokens;
       })
       .then((tokens) => {

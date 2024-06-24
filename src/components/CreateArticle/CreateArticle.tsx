@@ -105,9 +105,23 @@ function CreateArticle({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
+    const updateData = {
+      title: data.title,
+      category: data.category,
+      author: data.author,
+      timeToRead: data.timeToRead,
+      status: data.status,
+      categoryId: data.categoryId,
+      hasContent: data.hasContent,
+      content: data.content,
+      picture:
+        'https://s3.ap-southeast-1.amazonaws.com/nurturewave-be-dev/uploads%2Fimages%2F0b8821d6-1a35-4986-af30-232f74a04b51_download+%282%29.jpeg',
+      type: 'article',
+    };
+
     setIsLoading(true);
     await instance
-      .post('admins/articles', data, {
+      .post('admins/articles', updateData, {
         headers: { Authorization: AuthStr },
       })
       .then(function (response) {
@@ -122,20 +136,24 @@ function CreateArticle({
     reset();
   };
 
-  // const [data, setData] = useState();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    instance
-      .get('admins/categories?page=1&limit=25', {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, []);
+    async function handleCategory() {
+      await instance
+        .get('admins/categories?page=1&limit=25', {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          setData(response.data.data);
+          console.log(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    handleCategory();
+  }, [AuthStr]);
 
   return (
     <div>
@@ -217,9 +235,9 @@ function CreateArticle({
                     value={statusValue}
                     onChange={handleStatusValueChange}
                   >
-                    <MenuItem value={'Published'}>Published</MenuItem>
-                    <MenuItem value={'Unpublished'}>Unpublished</MenuItem>
-                    <MenuItem value={'Draft'}>Draft</MenuItem>
+                    <MenuItem value={'published'}>Published</MenuItem>
+                    <MenuItem value={'unpublished'}>Unpublished</MenuItem>
+                    <MenuItem value={'draft'}>Draft</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -237,9 +255,10 @@ function CreateArticle({
                     value={categoryValue}
                     onChange={handleCategoryValueChange}
                   >
-                    {/* {data.map((item) => (
-
-                    ))} */}
+                    {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
+                    {data.map((item: any) => (
+                      <MenuItem value={item.id}>{item.name}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
