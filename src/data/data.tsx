@@ -16,6 +16,8 @@ const data = [
     icon: <ComputerOutlinedIcon />,
     component: <Static />,
     path: '/static',
+    page: 'static-content',
+    f_type: '',
   },
   {
     id: 1,
@@ -23,6 +25,8 @@ const data = [
     icon: <PeopleOutlineIcon />,
     component: <Admin />,
     path: '/admin',
+    page: 'admins',
+    f_type: '',
   },
   {
     id: 2,
@@ -30,6 +34,8 @@ const data = [
     icon: <ArticleOutlinedIcon />,
     component: <Article />,
     path: '/article',
+    page: 'articles',
+    f_type: 'article',
   },
   {
     id: 3,
@@ -37,6 +43,8 @@ const data = [
     icon: <FeedOutlinedIcon />,
     component: <PD />,
     path: '/pd',
+    page: 'articles',
+    f_type: 'pd',
   },
   {
     id: 4,
@@ -44,6 +52,8 @@ const data = [
     icon: <CategoryOutlinedIcon />,
     component: <Categories />,
     path: '/category',
+    page: 'categories',
+    f_type: '',
   },
 ];
 

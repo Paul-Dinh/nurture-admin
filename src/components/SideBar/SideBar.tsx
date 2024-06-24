@@ -26,8 +26,10 @@ import InfoBar from '../InfoBar/InfoBar';
 import SearchBar from '../SearchBar/SearchBar';
 import './SideBar.css';
 // import Loading from '../Loading/Loading';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import instance from '../../api/AxiosConfig';
+import { setBody } from '../../features/body/bodySlice';
+import { currentPage, setCurrentPageName } from '../../features/currentPage/currentPageSlice';
 import { sideBarOff, sideBarOn } from '../../features/margin/marginSlice';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
 import CreateArticle from '../CreateArticle/CreateArticle';
@@ -76,6 +78,7 @@ interface TextItem {
   path: string;
   label: string;
   icon: React.ReactNode;
+  page: string;
 }
 
 const AppBar = styled(MuiAppBar, {
@@ -120,6 +123,8 @@ export default function Sidebar() {
   const [name, setName] = useState<string>();
   // const [isLoading, setIsLoading] = useState(false);
   // const [openUpdateForm, setOpenUpdateForm] = useState(false);
+  const dispatch = useDispatch();
+  const currentPageName = useSelector(currentPage);
 
   const [openCreateStatic, setOpenCreateStatic] = useState(false);
   const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
@@ -150,20 +155,17 @@ export default function Sidebar() {
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
 
-    axios
-      .get(`https://dev-api.nurture.vinova.sg/api/v1/admins/static-content?${filter}`, {
+    instance
+      .get(`admins/${currentPageName}?${filter}`, {
         headers: { Authorization: AuthStr },
       })
-      .then((response) => console.log(response.data.data))
+      .then((response) => dispatch(setBody(response.data.data)))
       .catch((err) => console.log(err));
   }, [filter]);
 
   const handleSearchChange = (newFilter: string) => {
     setFilter(newFilter);
   };
-
-  // const marginTest = useSelector(marginValue);
-  const dispatch = useDispatch();
 
   return (
     <>
@@ -184,7 +186,6 @@ export default function Sidebar() {
               onClick={() => {
                 handleDrawerOpen();
                 dispatch(sideBarOn());
-                // console.log(marginTest);
               }}
               edge='start'
               sx={{
@@ -252,7 +253,6 @@ export default function Sidebar() {
                 onClick={() => {
                   handleDrawerClose();
                   dispatch(sideBarOff());
-                  // console.log(marginTest);
                 }}
               >
                 {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -269,6 +269,7 @@ export default function Sidebar() {
                 to={text.path}
                 onClick={() => {
                   setName(text.label);
+                  dispatch(setCurrentPageName(text.page));
                   // sx={{
                   //   background:
                   // }}

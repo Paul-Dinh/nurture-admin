@@ -14,8 +14,9 @@ import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
 import axios from 'axios';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { marginValue } from '../../features/margin/marginSlice.ts';
+import { setBody } from '../../features/body/bodySlice.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -23,17 +24,16 @@ type TableRowData = Record<string, any>;
 type Props = {
   head: Array<string>;
   body: TableRowData[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setBody: (value: React.SetStateAction<any>) => void;
 };
 
-function TableContent({ head, body, setBody }: Props) {
+function TableContent({ head, body }: Props) {
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
   const [selectedRow, setSelectedRow] = useState({});
   const [slug, setSlug] = useState('');
   const [id, setId] = useState('');
+  const dispatch = useDispatch();
 
   const handleUpdateClick = (idx: number, item: TableRowData) => {
     setOpenUpdateForm(true);
@@ -51,7 +51,8 @@ function TableContent({ head, body, setBody }: Props) {
   const handleDeleteConfirm = () => {
     const updatedBody = [...body];
     updatedBody.splice(index, 1);
-    setBody(updatedBody);
+    dispatch(setBody(updatedBody));
+    // const currentPageName = useSelector(currentPage);
 
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
