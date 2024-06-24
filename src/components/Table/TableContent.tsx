@@ -14,6 +14,8 @@ import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
 import axios from 'axios';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
+import { useSelector } from 'react-redux';
+import { marginValue } from '../../features/margin/marginSlice.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -87,9 +89,14 @@ function TableContent({ head, body, setBody }: Props) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  const marginTest = useSelector(marginValue);
+
   return (
     <>
-      <div className={styles.wrapper}>
+      <div
+        className={styles.wrapper}
+        style={{ marginLeft: marginTest, transition: 'margin-left 0.35s' }}
+      >
         <TableContainer
           sx={{
             height: 'calc(100% - 52px)',

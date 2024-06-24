@@ -11,6 +11,8 @@ import { grey } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { sideBarOff } from '../../features/margin/marginSlice';
 
 function InfoBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -44,10 +46,12 @@ function InfoBar() {
   }, [AuthStr]);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleLogOut = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     navigate('/login');
+    dispatch(sideBarOff());
   };
 
   return (
