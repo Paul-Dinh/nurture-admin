@@ -92,9 +92,17 @@ function CreatePD({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
+    const updateData = {
+      title: data.title,
+      name: data.name,
+      status: data.status,
+      picture:
+        'https://s3.ap-southeast-1.amazonaws.com/nurturewave-be-dev/uploads%2Fimages%2F0b8821d6-1a35-4986-af30-232f74a04b51_download+%282%29.jpeg',
+    };
+
     setIsLoading(true);
     await instance
-      .post('admins/categories', data, {
+      .post('admins/categories', updateData, {
         headers: { Authorization: AuthStr },
       })
       .then(function (response) {
@@ -193,15 +201,6 @@ function CreatePD({
                     <MenuItem value={'inactive'}>Inactive</MenuItem>
                   </Select>
                 </FormControl>
-              </div>
-
-              <div className={styles.form_control}>
-                <FormLabel
-                  error={!!errors.picture}
-                  style={{ marginBottom: '6px' }}
-                >
-                  Image
-                </FormLabel>
               </div>
 
               <div className={styles.submit_btn}>

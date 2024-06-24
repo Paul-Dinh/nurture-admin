@@ -9,8 +9,6 @@ import Fade from '@mui/material/Fade';
 import Avatar from '@mui/material/Avatar';
 import { grey } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sideBarOff } from '../../features/margin/marginSlice';
 
@@ -24,26 +22,7 @@ function InfoBar() {
     setAnchorEl(null);
   };
 
-  const USER_TOKEN = localStorage.getItem('accessToken');
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [body, setBody] = useState('');
-  const AuthStr = 'Bearer ' + USER_TOKEN;
-
-  useEffect(() => {
-    axios
-      .post(
-        'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
-        { refreshToken: localStorage.getItem('refreshToken') },
-        {
-          headers: { Authorization: AuthStr },
-        },
-      )
-      .then((response) => {
-        setBody(response.data.data.admin.username);
-      })
-      .catch((err) => console.log(err));
-  }, [AuthStr]);
+  const user = localStorage.getItem('username');
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,7 +40,7 @@ function InfoBar() {
         variant='Reg_16'
         sx={{ marginLeft: '20px' }}
       >
-        {body}
+        {user}
       </Typography>
       <Button
         id='fade-button'

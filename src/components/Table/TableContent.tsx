@@ -12,11 +12,12 @@ import React, { useState } from 'react';
 import DeleteForm from '../DeleteForm/DeleteForm.tsx';
 import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
-import axios from 'axios';
+// import axios from 'axios';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { marginValue } from '../../features/margin/marginSlice.ts';
 import { setBody } from '../../features/body/bodySlice.ts';
+import instance from '../../api/AxiosConfig.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -57,16 +58,16 @@ function TableContent({ head, body }: Props) {
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
 
-    axios
-      .delete('https://dev-api.nurture.vinova.sg/api/v1/admins/admins/' + id, {
+    instance
+      .delete('admins/admins/' + id, {
         headers: { Authorization: AuthStr },
       })
       .then((response) => console.log(response.data.data))
       .catch((err) => console.log(err));
     setOpenDeleteForm(false);
 
-    axios
-      .delete('https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + slug, {
+    instance
+      .delete('admins/static-content/' + slug, {
         headers: { Authorization: AuthStr },
       })
       .then((response) => console.log(response.data.data))

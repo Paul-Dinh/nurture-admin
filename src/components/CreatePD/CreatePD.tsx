@@ -67,7 +67,7 @@ function CreatePD({
       title: yup.string().required('This field is required.'),
       author: yup.string().required('This field is required.'),
       status: yup.string().required('This field is required.'),
-      categoryID: yup.string().required('This field is required.'),
+      categoryId: yup.string().required('This field is required.'),
       timetoRead: yup.string().required('This field is required.'),
       picture: yup.string(),
       content: yup.string(),
@@ -100,9 +100,22 @@ function CreatePD({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
+    const updateData = {
+      title: data.title,
+      category: data.category,
+      author: data.author,
+      status: data.status,
+      categoryId: data.categoryId,
+      hasContent: data.hasContent,
+      content: data.content,
+      picture:
+        'https://s3.ap-southeast-1.amazonaws.com/nurturewave-be-dev/uploads%2Fimages%2F0b8821d6-1a35-4986-af30-232f74a04b51_download+%282%29.jpeg',
+      type: 'pd',
+    };
+
     setIsLoading(true);
     await instance
-      .post('admins/articles', data, {
+      .post('admins/articles', updateData, {
         headers: { Authorization: AuthStr },
       })
       .then(function (response) {
@@ -116,6 +129,24 @@ function CreatePD({
     console.log(data);
     reset();
   };
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function handleCategory() {
+      await instance
+        .get('admins/categories?page=1&limit=25', {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          setData(response.data.data);
+          console.log(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    handleCategory();
+  }, [AuthStr]);
 
   return (
     <div>
@@ -197,30 +228,30 @@ function CreatePD({
                     value={statusValue}
                     onChange={handleStatusValueChange}
                   >
-                    <MenuItem value={'Published'}>Published</MenuItem>
-                    <MenuItem value={'Unpublished'}>Unpublished</MenuItem>
-                    <MenuItem value={'Draft'}>Draft</MenuItem>
+                    <MenuItem value={'published'}>Published</MenuItem>
+                    <MenuItem value={'unpublished'}>Unpublished</MenuItem>
+                    <MenuItem value={'draft'}>Draft</MenuItem>
                   </Select>
                 </FormControl>
               </div>
 
               <div className={styles.form_control}>
                 <FormLabel
-                  error={!!errors.categoryID}
+                  error={!!errors.categoryId}
                   style={{ marginBottom: '6px' }}
                 >
                   Category
                 </FormLabel>
-                <FormControl error={!!errors.categoryID}>
+                <FormControl error={!!errors.categoryId}>
                   <Select
-                    {...register('categoryID')}
+                    {...register('categoryId')}
                     value={categoryValue}
                     onChange={handleCategoryValueChange}
                   >
-                    <MenuItem value={'Postnatal care'}>Postnatal care</MenuItem>
-                    <MenuItem value={'Nutrition'}>Nutrition</MenuItem>
-                    <MenuItem value={'Labour'}>Labour</MenuItem>
-                    <MenuItem value={'Prenatal'}>Prenatal</MenuItem>
+                    {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
+                    {data.map((item: any) => (
+                      <MenuItem value={item.id}>{item.name}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
