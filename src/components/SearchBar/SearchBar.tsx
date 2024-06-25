@@ -3,6 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import './SearchBar.css';
 import { useRef, useState } from 'react';
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 function SearchBar({ onSubmit }: { onSubmit: Function }) {
   const [search, setSearch] = useState('');
   const typingTimeOutRef = useRef(0);
@@ -34,6 +35,7 @@ function SearchBar({ onSubmit }: { onSubmit: Function }) {
     <div className='search'>
       <div className='searchInput'>
         <input
+          className='input'
           type='text'
           placeholder='Search'
           onChange={changeSearch}

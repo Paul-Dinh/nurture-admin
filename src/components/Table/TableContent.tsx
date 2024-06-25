@@ -47,7 +47,7 @@ function TableContent({ head, body }: Props) {
     setIndex(idx);
     setSlug(item.slug);
     setId(item.id);
-    setIds(item.ids);
+    setIds(item.id);
   };
 
   const handleDeleteConfirm = () => {
