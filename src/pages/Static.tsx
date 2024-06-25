@@ -21,6 +21,7 @@ function Static() {
       await instance
         .get('admins/static-content', {
           headers: { Authorization: AuthStr },
+          params: {},
         })
         .then((response) => dispatch(setBody(response.data.data)))
 
