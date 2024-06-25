@@ -19,10 +19,12 @@ import {
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
+import instance from '../../api/AxiosConfig';
+import { setBody } from '../../features/body/bodySlice';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateStaticContent.module.css';
-import axios from 'axios';
-import ConfirmUpdateForm from '../ConfirmUpdateForm/ConfirmUpdateForm';
 
 CreateStaticContent.propTypes = {};
 
@@ -54,7 +56,7 @@ function CreateStaticContent({
   const [title, setTitle] = useState('');
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
-  const [openConfirmUpdateForm, setOpenConfirmUpdateForm] = useState(false);
+  const dispatch = useDispatch();
 
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setCategoryValue(e.target.value);
@@ -94,8 +96,8 @@ function CreateStaticContent({
   }, [selectedRow, reset]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    dispatch(loadingOn());
 
     const updateData = {
       title: data.title,
@@ -109,9 +111,9 @@ function CreateStaticContent({
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
 
-    axios
-      .put(
-        'https://dev-api.nurture.vinova.sg/api/v1/admins/static-content/' + selectedRow.slug,
+    await instance
+      .post(
+        'admins/static-content',
         { ...updateData },
         {
           headers: { Authorization: AuthStr },
@@ -120,11 +122,18 @@ function CreateStaticContent({
       .then((response) => console.log(response.data.data))
       .catch((err) => console.log(err));
 
+    await instance
+      .get('admins/static-content', {
+        headers: { Authorization: AuthStr },
+      })
+      .then((response) => dispatch(setBody(response.data.data)))
+
+      .catch((err) => console.log(err));
+
     setOpenUpdateForm(false);
+    dispatch(loadingOff());
     reset();
   };
-
-  const handleUpdateConfirm = () => {};
 
   return (
     <>
@@ -283,12 +292,6 @@ function CreateStaticContent({
           </Box>
         </Fade>
       </Modal>
-
-      <ConfirmUpdateForm
-        isOpen={openConfirmUpdateForm}
-        setOpenConfirmUpdateForm={setOpenConfirmUpdateForm}
-        handleUpdateConfirm={handleUpdateConfirm}
-      />
     </>
   );
 }

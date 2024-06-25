@@ -8,16 +8,15 @@ import {
   TableRow,
 } from '@mui/material';
 import React, { useState } from 'react';
-// import CreateStaticContent from '../CreateStaticContent/CreateStaticContent.tsx';
+import { useDispatch, useSelector } from 'react-redux';
+import instance from '../../api/AxiosConfig.tsx';
+import { setBody } from '../../features/body/bodySlice.ts';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice.ts';
+import { marginValue } from '../../features/margin/marginSlice.ts';
+import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
 import DeleteForm from '../DeleteForm/DeleteForm.tsx';
 import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
-// import axios from 'axios';
-import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { marginValue } from '../../features/margin/marginSlice.ts';
-import { setBody } from '../../features/body/bodySlice.ts';
-import instance from '../../api/AxiosConfig.tsx';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -50,10 +49,10 @@ function TableContent({ head, body }: Props) {
   };
 
   const handleDeleteConfirm = () => {
+    dispatch(loadingOn());
     const updatedBody = [...body];
     updatedBody.splice(index, 1);
     dispatch(setBody(updatedBody));
-    // const currentPageName = useSelector(currentPage);
 
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
@@ -72,7 +71,7 @@ function TableContent({ head, body }: Props) {
       })
       .then((response) => console.log(response.data.data))
       .catch((err) => console.log(err));
-
+    dispatch(loadingOff());
     setOpenDeleteForm(false);
   };
 

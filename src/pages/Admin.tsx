@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import instance from '../api/AxiosConfig';
 import TableContent from '../components/Table/TableContent';
 import { bodyValue, setBody } from '../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../features/loader/loaderSlice';
@@ -18,21 +18,8 @@ function Admin() {
     async function handleLoading() {
       dispatch(loadingOn());
 
-      // await axios
-      //   .post(
-      //     'https://dev-api.nurture.vinova.sg/api/v1/admins/auth/refresh-access-token',
-      //     // { refreshToken: localStorage.getItem('refreshToken') },
-      //     {
-      //       headers: { Authorization: AuthStr },
-      //     },
-      //   )
-      //   .then((response) => {
-      //     localStorage.setItem('accessToken', response.data.data.tokens.accessToken);
-      //   })
-      //   .catch((err) => console.log(err));
-
-      await axios
-        .get('https://dev-api.nurture.vinova.sg/api/v1/admins/admins', {
+      await instance
+        .get('admins/admins', {
           headers: { Authorization: AuthStr },
         })
         .then((response) => dispatch(setBody(response.data.data)))

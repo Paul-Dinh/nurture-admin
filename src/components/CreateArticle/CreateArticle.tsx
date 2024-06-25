@@ -4,10 +4,9 @@ import {
   Backdrop,
   Box,
   Button,
+  Divider,
   Fade,
   FormControl,
-  //   FormControlLabel,
-  //   FormHelperText,
   FormLabel,
   MenuItem,
   Modal,
@@ -15,15 +14,14 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
-  Divider,
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import styles from './CreateArticle.module.css';
-// import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Loading from '../Loading/Loading';
 import instance from '../../api/AxiosConfig';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
+import styles from './CreateArticle.module.css';
 CreateArticle.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,20 +50,15 @@ function CreateArticle({
   const handleClose = () => setOpenUpdateForm(false);
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
+  const dispatch = useDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [title, setTitle] = useState('');
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setCategoryValue(e.target.value);
   };
   const handleStatusValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setStatusValue(e.target.value);
   };
-  // const [file, setFile] = useState('');
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const handleFileChange = (event: any) => {
-  //   setFile(event.target.files[0]);
-  // };
 
   const schema = yup
     .object({
@@ -91,11 +84,8 @@ function CreateArticle({
   useEffect(() => {
     if (selectedRow) {
       reset(selectedRow);
-      setTitle(selectedRow.title); // Set the form values to the existing data
     }
   }, [selectedRow, reset]);
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const USER_TOKEN = localStorage.getItem('accessToken');
 
@@ -105,6 +95,8 @@ function CreateArticle({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
+    dispatch(loadingOn());
+
     const updateData = {
       title: data.title,
       category: data.category,
@@ -119,7 +111,6 @@ function CreateArticle({
       type: 'article',
     };
 
-    setIsLoading(true);
     await instance
       .post('admins/articles', updateData, {
         headers: { Authorization: AuthStr },
@@ -131,8 +122,7 @@ function CreateArticle({
         console.log(error);
       });
 
-    setIsLoading(false);
-    console.log(data);
+    dispatch(loadingOff());
     reset();
   };
 
@@ -330,7 +320,6 @@ function CreateArticle({
           </Box>
         </Fade>
       </Modal>
-      <Loading open={isLoading} />
     </div>
   );
 }

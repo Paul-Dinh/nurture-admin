@@ -4,10 +4,9 @@ import {
   Backdrop,
   Box,
   Button,
+  Divider,
   Fade,
   FormControl,
-  //   FormControlLabel,
-  //   FormHelperText,
   FormLabel,
   MenuItem,
   Modal,
@@ -15,15 +14,14 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
-  Divider,
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import styles from './CreatePD.module.css';
-// import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Loading from '../Loading/Loading';
 import instance from '../../api/AxiosConfig';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
+import styles from './CreatePD.module.css';
 CreatePD.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,9 +50,8 @@ function CreatePD({
   const handleClose = () => setOpenUpdateForm(false);
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
+  const dispatch = useDispatch();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [title, setTitle] = useState('');
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setCategoryValue(e.target.value);
   };
@@ -86,20 +83,18 @@ function CreatePD({
   useEffect(() => {
     if (selectedRow) {
       reset(selectedRow);
-      setTitle(selectedRow.title); // Set the form values to the existing data
     }
   }, [selectedRow, reset]);
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const USER_TOKEN = localStorage.getItem('accessToken');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [body, setBody] = useState('');
   const AuthStr = 'Bearer ' + USER_TOKEN;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
+    dispatch(loadingOn());
+
     const updateData = {
       title: data.title,
       category: data.category,
@@ -113,7 +108,6 @@ function CreatePD({
       type: 'pd',
     };
 
-    setIsLoading(true);
     await instance
       .post('admins/articles', updateData, {
         headers: { Authorization: AuthStr },
@@ -125,8 +119,7 @@ function CreatePD({
         console.log(error);
       });
 
-    setIsLoading(false);
-    console.log(data);
+    dispatch(loadingOff());
     reset();
   };
   const [data, setData] = useState([]);
@@ -302,7 +295,6 @@ function CreatePD({
           </Box>
         </Fade>
       </Modal>
-      <Loading open={isLoading} />
     </div>
   );
 }
