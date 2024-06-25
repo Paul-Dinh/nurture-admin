@@ -19,12 +19,13 @@ import {
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
 import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateStaticContent.module.css';
+import { edit, setEditOff } from '../../features/edit/editSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -49,12 +50,17 @@ function CreateStaticContent({
   setOpenUpdateForm: (open: boolean) => void;
   selectedRow: TableRowData;
 }) {
-  const handleClose = () => setOpenUpdateForm(false);
+  const dispatch = useDispatch();
+  const editFormOn = useSelector(edit);
+
+  const handleClose = () => {
+    setOpenUpdateForm(false);
+    dispatch(setEditOff());
+  };
 
   const [title, setTitle] = useState('');
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
-  const dispatch = useDispatch();
 
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
     setCategoryValue(e.target.value);
@@ -109,16 +115,29 @@ function CreateStaticContent({
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
 
-    await instance
-      .post(
-        'admins/static-content',
-        { ...updateData },
-        {
-          headers: { Authorization: AuthStr },
-        },
-      )
-      .then((response) => console.log(response.data.data))
-      .catch((err) => console.log(err));
+    if (editFormOn) {
+      await instance
+        .put(
+          'admins/static-content/' + selectedRow.slug,
+          { ...updateData },
+          {
+            headers: { Authorization: AuthStr },
+          },
+        )
+        .then((response) => console.log(response.data.data))
+        .catch((err) => console.log(err));
+    } else {
+      await instance
+        .post(
+          'admins/static-content',
+          { ...updateData },
+          {
+            headers: { Authorization: AuthStr },
+          },
+        )
+        .then((response) => console.log(response.data.data))
+        .catch((err) => console.log(err));
+    }
 
     await instance
       .get('admins/static-content', {
@@ -129,6 +148,7 @@ function CreateStaticContent({
       .catch((err) => console.log(err));
 
     setOpenUpdateForm(false);
+    dispatch(setEditOff());
     dispatch(loadingOff());
     reset();
   };

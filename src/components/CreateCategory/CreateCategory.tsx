@@ -16,12 +16,13 @@ import {
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
 import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateCategory.module.css';
+import { edit, setEditOff } from '../../features/edit/editSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -46,9 +47,14 @@ function CreateCategory({
   setOpenUpdateForm: (open: boolean) => void;
   selectedRow: TableRowData;
 }) {
-  const handleClose = () => setOpenUpdateForm(false);
-  const [statusValue, setStatusValue] = useState('');
   const dispatch = useDispatch();
+  const editFormOn = useSelector(edit);
+
+  const handleClose = () => {
+    setOpenUpdateForm(false);
+    dispatch(setEditOff());
+  };
+  const [statusValue, setStatusValue] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleStatusValueChange = (e: { target: { value: SetStateAction<string> } }) => {
@@ -96,16 +102,29 @@ function CreateCategory({
         'https://s3.ap-southeast-1.amazonaws.com/nurturewave-be-dev/uploads%2Fimages%2F0b8821d6-1a35-4986-af30-232f74a04b51_download+%282%29.jpeg',
     };
 
-    await instance
-      .post('admins/categories', updateData, {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    if (editFormOn) {
+      await instance
+        .put('admins/categories/' + selectedRow.id, updateData, {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      await instance
+        .post('admins/categories', updateData, {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
 
     await instance
       .get('admins/categories', {
@@ -116,6 +135,7 @@ function CreateCategory({
       .catch((err) => console.log(err));
 
     setOpenUpdateForm(false);
+    dispatch(setEditOff());
     dispatch(loadingOff());
     reset();
   };

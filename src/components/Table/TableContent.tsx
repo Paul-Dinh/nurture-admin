@@ -25,6 +25,7 @@ import styles from './TableContent.module.css';
 import ArrowIcon from '../../assets/icons/arrow-icon.tsx';
 import EditIcon from '../../assets/icons/edit-icon.tsx';
 import DeleteIcon from '../../assets/icons/delete-icon.tsx';
+import { setEditOn } from '../../features/edit/editSlice.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -227,7 +228,10 @@ function TableContent({ head, body }: Props) {
                     <div className={styles.action}>
                       <span
                         className={styles.update_btn}
-                        onClick={() => handleUpdateClick(idx, item)}
+                        onClick={() => {
+                          handleUpdateClick(idx, item);
+                          dispatch(setEditOn());
+                        }}
                       >
                         <EditIcon />
                       </span>
