@@ -4,7 +4,6 @@ import RouteMenu from './RouteMenu';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
-  //   body: any;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
