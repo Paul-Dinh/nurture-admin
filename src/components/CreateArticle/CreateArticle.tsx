@@ -17,12 +17,13 @@ import {
 } from '@mui/material';
 import { SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
 import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateArticle.module.css';
+import { edit, setEditOff } from '../../features/edit/editSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -47,10 +48,15 @@ function CreateArticle({
   setOpenUpdateForm: (open: boolean) => void;
   selectedRow: TableRowData;
 }) {
-  const handleClose = () => setOpenUpdateForm(false);
+  const dispatch = useDispatch();
+  const editFormOn = useSelector(edit);
+
+  const handleClose = () => {
+    setOpenUpdateForm(false);
+    dispatch(setEditOff());
+  };
   const [categoryValue, setCategoryValue] = useState('');
   const [statusValue, setStatusValue] = useState('');
-  const dispatch = useDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleCategoryValueChange = (e: { target: { value: SetStateAction<string> } }) => {
@@ -96,7 +102,7 @@ function CreateArticle({
   const handleSubmitOnClick = async (data: any) => {
     dispatch(loadingOn());
 
-    const updateData = {
+    const newData = {
       title: data.title,
       category: data.category,
       author: data.author,
@@ -110,16 +116,41 @@ function CreateArticle({
       type: 'article',
     };
 
-    await instance
-      .post('admins/articles', updateData, {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const updateData = {
+      title: data.title,
+      author: data.author,
+      timeToRead: data.timeToRead,
+      status: data.status,
+      categoryId: data.categoryId,
+      content: data.content,
+      picture:
+        'https://s3.ap-southeast-1.amazonaws.com/nurturewave-be-dev/uploads%2Fimages%2F0b8821d6-1a35-4986-af30-232f74a04b51_download+%282%29.jpeg',
+      type: 'article',
+    };
+
+    if (editFormOn) {
+      await instance
+        .put('admins/articles/' + selectedRow.id, updateData, {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      await instance
+        .post('admins/articles', newData, {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
 
     await instance
       .get('admins/articles/', {
@@ -130,6 +161,7 @@ function CreateArticle({
       .catch((err) => console.log(err));
 
     setOpenUpdateForm(false);
+    dispatch(setEditOff());
     dispatch(loadingOff());
     reset();
   };

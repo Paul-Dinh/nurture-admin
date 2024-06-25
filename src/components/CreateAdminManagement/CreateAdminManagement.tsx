@@ -20,12 +20,13 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
 import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateAdminManagement.module.css';
+import { edit, setEditOff } from '../../features/edit/editSlice';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -50,10 +51,15 @@ function CreateAdminManagement({
   setOpenUpdateForm: (open: boolean) => void;
   selectedRow: TableRowData;
 }) {
-  const handleClose = () => setOpenUpdateForm(false);
+  const dispatch = useDispatch();
+  const editFormOn = useSelector(edit);
+
+  const handleClose = () => {
+    setOpenUpdateForm(false);
+    dispatch(setEditOff());
+  };
 
   const [title, setTitle] = useState('');
-  const dispatch = useDispatch();
 
   const schema = yup
     .object({
@@ -97,16 +103,39 @@ function CreateAdminManagement({
   const handleSubmitOnClick = async (data: any) => {
     dispatch(loadingOn());
 
-    await instance
-      .post('admins/admins', data, {
-        headers: { Authorization: AuthStr },
-      })
-      .then(function (response) {
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const updateData = {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+      picture: '',
+      status: data.status,
+      username: data.username,
+    };
+
+    if (editFormOn) {
+      await instance
+        .put('admins/admins/' + selectedRow.id, updateData, {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      await instance
+        .post('admins/admins', data, {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          return response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
 
     await instance
       .get('admins/admins', {
@@ -116,6 +145,7 @@ function CreateAdminManagement({
       .catch((err) => console.log(err));
 
     setOpenUpdateForm(false);
+    dispatch(setEditOff());
     dispatch(loadingOff());
     reset();
   };
