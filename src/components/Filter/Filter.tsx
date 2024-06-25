@@ -27,6 +27,12 @@ export default function FadeMenu() {
   // const { reminder, setReminder } = useState(false);
   const [data, setData] = useState();
   const dispatch = useDispatch();
+  // const [defaultChecked, setDefaultChecked] = useState(true);
+
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const handleClear = async () => {
+  //   setDefaultChecked(false);
+  // };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleShowOnClick = async (data: any) => {
@@ -65,13 +71,13 @@ export default function FadeMenu() {
         })
         .then(function (response) {
           setData(response.data.data);
-          console.log(response.data.data);
+          // console.log(response.data.data);
         })
         .catch(function (error) {
           console.log(error);
         });
     }
-    console.log(data);
+    // console.log(data);
     handleFilter();
   }, [AuthStr]);
 
