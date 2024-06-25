@@ -25,8 +25,8 @@
   right: 0;
 }
 
-input:hover,
-input:focus {
+.input:hover,
+.input:focus {
   border: 1px solid greenyellow;
 }
 
