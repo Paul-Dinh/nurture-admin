@@ -312,36 +312,6 @@ function CreateArticle({
                   helperText={errors.timeToRead?.message}
                 />
               </div>
-              {/* 
-              <div className={styles.form_control}>
-                <FormLabel
-                  error={!!errors.picture}
-                  style={{ marginBottom: '6px' }}
-                >
-                  Image
-                </FormLabel>
-              </div> */}
-              {/* <Box mt={2}>
-                <Button
-                  variant='contained'
-                  component='label'
-                >
-                  Upload File
-                  <input
-                    type='file'
-                    hidden
-                    onChange={handleFileChange}
-                  />
-                </Button>
-                {file && (
-                  <Typography
-                    variant='body1'
-                    component='p'
-                  >
-                    File chosen: {file}
-                  </Typography>
-                )}
-              </Box> */}
 
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>

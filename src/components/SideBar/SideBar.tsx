@@ -16,7 +16,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { CSSObject, Theme, styled, useTheme } from '@mui/material/styles';
 import * as React from 'react';
-// import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -25,7 +24,6 @@ import Filter from '../Filter/Filter';
 import InfoBar from '../InfoBar/InfoBar';
 import SearchBar from '../SearchBar/SearchBar';
 import './SideBar.css';
-// import Loading from '../Loading/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../api/AxiosConfig';
 import { setBody } from '../../features/body/bodySlice';
@@ -39,7 +37,6 @@ import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
 import { setCurrentPageName } from '../../features/currentPageName/currentPageNameSlice';
 
 const drawerWidth = 240;
-// const miniDrawerWidth = 60;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -203,26 +200,6 @@ export default function Sidebar() {
               </Typography>
               <div className='search-filter'>
                 <SearchBar onSubmit={handleSearchChange} />
-                {/* <button className='filter'>
-                <FilterAltOutlinedIcon />
-                Filter
-              </button> */}
-                {/* <Button
-                variant='contained'
-                sx={{
-                  background: 'rgb(241, 241, 241)',
-                  color: 'grey',
-                  height: '40px',
-                  marginLeft: '10px',
-                  border: '1px solid #b3b9c4',
-                  ':hover': {
-                    background: 'rgb(241, 241, 241)',
-                    border: '1px solid rgb(115,132,150)',
-                  },
-                }}
-              >
-                <FilterAltOutlinedIcon /> Filter
-              </Button> */}
                 <Filter />
               </div>
               <Button
@@ -269,9 +246,6 @@ export default function Sidebar() {
                   setName(text.label);
                   dispatch(setCurrentPage(text.page));
                   dispatch(setCurrentPageName(text.label));
-                  // sx={{
-                  //   background:
-                  // }}
                 }}
               >
                 <ListItem
@@ -316,11 +290,6 @@ export default function Sidebar() {
             flexGrow: 1,
             p: 3,
             height: '64px',
-            // transition: theme.transitions.create(['margin', 'width'], {
-            //   easing: theme.transitions.easing.sharp,
-            //   duration: theme.transitions.duration.enteringScreen,
-            // }),
-            // marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(7)} + 1px)`,
           }}
         >
           <DrawerHeader />

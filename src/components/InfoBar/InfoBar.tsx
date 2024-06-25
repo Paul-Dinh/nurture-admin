@@ -1,5 +1,4 @@
 import React from 'react';
-// import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Button, Typography } from '@mui/material';
 import './InfoBar.css';
@@ -29,6 +28,7 @@ function InfoBar() {
   const handleLogOut = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('username');
     navigate('/login');
     dispatch(sideBarOff());
   };
@@ -51,9 +51,6 @@ function InfoBar() {
       >
         <MoreHorizIcon color='primary' />
       </Button>
-      {/* <button onClick={handleClick}>
-        <MoreHorizIcon color='primary' />
-      </button> */}
       <Menu
         id='fade-menu'
         MenuListProps={{
