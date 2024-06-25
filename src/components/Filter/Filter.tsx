@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-// import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import Checkbox from '@mui/material/Checkbox';
@@ -24,15 +23,9 @@ export default function FadeMenu() {
     setAnchorEl(null);
   };
   const { reset } = useForm();
-  // const { reminder, setReminder } = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState();
   const dispatch = useDispatch();
-  // const [defaultChecked, setDefaultChecked] = useState(true);
-
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const handleClear = async () => {
-  //   setDefaultChecked(false);
-  // };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleShowOnClick = async (data: any) => {
@@ -71,13 +64,11 @@ export default function FadeMenu() {
         })
         .then(function (response) {
           setData(response.data.data);
-          // console.log(response.data.data);
         })
         .catch(function (error) {
           console.log(error);
         });
     }
-    // console.log(data);
     handleFilter();
   }, [AuthStr]);
 
@@ -121,19 +112,6 @@ export default function FadeMenu() {
           }}
         >
           <Typography variant='Bold_14'>Filter </Typography>
-          {/* <Select> */}
-          {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
-          {/* {data.map((item: any) => (
-              <FormControlLabel
-                control={<Checkbox />}
-                label='Required'
-                key={item.id}
-                value={item.category}
-              >
-                {item.category}
-              </FormControlLabel>
-            ))}
-          </Select> */}
           <FormControlLabel
             control={<Checkbox />}
             label='Title'

@@ -12,7 +12,6 @@ function SearchBar({ onSubmit }: { onSubmit: Function }) {
   const changeSearch = (event: any) => {
     const value = event.target.value;
     setSearch(value);
-    // console.log(value);
 
     if (!onSubmit) return;
 
@@ -25,12 +24,6 @@ function SearchBar({ onSubmit }: { onSubmit: Function }) {
     }, 500);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //   const searchKeyDown = (event: any) => {
-  //     if (event.key === 'Enter') {
-  //       props.changeHandleSearch(search);
-  //     }
-  //   };
   return (
     <div className='search'>
       <div className='searchInput'>
