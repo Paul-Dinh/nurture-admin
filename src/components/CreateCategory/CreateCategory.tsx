@@ -60,7 +60,7 @@ function CreatePD({
       title: yup.string().required('This field is required.'),
       name: yup.string().required('This field is required.'),
       status: yup.string().required('This field is required.'),
-      picture: yup.string(),
+      image: yup.string(),
     })
     .required();
 
@@ -92,7 +92,7 @@ function CreatePD({
       title: data.title,
       name: data.name,
       status: data.status,
-      picture:
+      image:
         'https://s3.ap-southeast-1.amazonaws.com/nurturewave-be-dev/uploads%2Fimages%2F0b8821d6-1a35-4986-af30-232f74a04b51_download+%282%29.jpeg',
     };
 

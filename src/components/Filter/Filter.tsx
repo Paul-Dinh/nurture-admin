@@ -8,6 +8,11 @@ import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import instance from '../../api/AxiosConfig';
+import { useDispatch } from 'react-redux';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 
 export default function FadeMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -18,6 +23,57 @@ export default function FadeMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { reset } = useForm();
+  // const { reminder, setReminder } = useState(false);
+  const [data, setData] = useState();
+  const dispatch = useDispatch();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleShowOnClick = async (data: any) => {
+    dispatch(loadingOn());
+
+    const updateData = {
+      title: data.title,
+      category: data.category,
+      slug: data.slug,
+      required: data.required,
+      status: data.status,
+    };
+    await instance
+      .post('admins/static-content', updateData, {
+        headers: { Authorization: AuthStr },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    dispatch(loadingOff());
+    reset();
+  };
+
+  const USER_TOKEN = localStorage.getItem('accessToken');
+  const AuthStr = 'Bearer ' + USER_TOKEN;
+
+  useEffect(() => {
+    async function handleFilter() {
+      await instance
+        .get('admins/static-content?page=1&limit=25', {
+          headers: { Authorization: AuthStr },
+        })
+        .then(function (response) {
+          setData(response.data.data);
+          console.log(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    console.log(data);
+    handleFilter();
+  }, [AuthStr]);
 
   return (
     <div>
@@ -59,21 +115,30 @@ export default function FadeMenu() {
           }}
         >
           <Typography variant='Bold_14'>Filter </Typography>
+          {/* <Select> */}
+          {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
+          {/* {data.map((item: any) => (
+              <FormControlLabel
+                control={<Checkbox />}
+                label='Required'
+                key={item.id}
+                value={item.category}
+              >
+                {item.category}
+              </FormControlLabel>
+            ))}
+          </Select> */}
           <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label='Label'
+            control={<Checkbox />}
+            label='Title'
           />
           <FormControlLabel
-            required
             control={<Checkbox />}
-            label='Required'
-          />
-          <FormControlLabel
-            disabled
-            control={<Checkbox />}
-            label='Disabled'
+            label='Category'
           />
         </FormGroup>
+        <Button>Clear All</Button>
+        <Button onClick={handleShowOnClick}>Show</Button>
       </Menu>
     </div>
   );
