@@ -11,9 +11,14 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../api/AxiosConfig.tsx';
 import { setBody } from '../../features/body/bodySlice.ts';
+import { currentPageName } from '../../features/currentPageName/currentPageNameSlice.ts';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice.ts';
 import { marginValue } from '../../features/margin/marginSlice.ts';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement.tsx';
+import CreateArticle from '../CreateArticle/CreateArticle.tsx';
+import CreateCategory from '../CreateCategory/CreateCategory.tsx';
+import CreatePD from '../CreatePD/CreatePD.tsx';
+import CreateStaticContent from '../CreateStaticContent/CreateStaticContent.tsx';
 import DeleteForm from '../DeleteForm/DeleteForm.tsx';
 import { StatusPoint } from '../StatusPoint/StatusPoint.tsx';
 import styles from './TableContent.module.css';
@@ -28,16 +33,31 @@ type Props = {
 
 function TableContent({ head, body }: Props) {
   const [openDeleteForm, setOpenDeleteForm] = useState(false);
-  const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [index, setIndex] = useState(-1);
   const [selectedRow, setSelectedRow] = useState({});
   const [slug, setSlug] = useState('');
   const [id, setId] = useState('');
   const [ids, setIds] = useState('');
+
   const dispatch = useDispatch();
+  const currentPage = useSelector(currentPageName);
+
+  const [openCreateStatic, setOpenCreateStatic] = useState(false);
+  const [openCreateAdmin, setOpenCreateAdmin] = useState(false);
+  const [openCreateArticle, setOpenCreateArticle] = useState(false);
+  const [openCreatePD, setOpenCreatePD] = useState(false);
+  const [openCreateCategory, setOpenCreateCategory] = useState(false);
+
+  const handleUpdateForm = (currentPage: string) => {
+    if (currentPage === 'Static Content') setOpenCreateStatic(true);
+    if (currentPage === 'Admin Management') setOpenCreateAdmin(true);
+    if (currentPage === 'Article') setOpenCreateArticle(true);
+    if (currentPage === 'PD Session') setOpenCreatePD(true);
+    if (currentPage === 'Category') setOpenCreateCategory(true);
+  };
 
   const handleUpdateClick = (idx: number, item: TableRowData) => {
-    setOpenUpdateForm(true);
+    handleUpdateForm(currentPage);
     setIndex(idx);
     setSelectedRow(item);
   };
@@ -45,9 +65,9 @@ function TableContent({ head, body }: Props) {
   const handleDeleteClick = (idx: number, item: TableRowData) => {
     setOpenDeleteForm(true);
     setIndex(idx);
-    setSlug(item.slug);
-    setId(item.id);
-    setIds(item.ids);
+    setSlug(item.slug ?? '');
+    setId(item.id ?? '');
+    setIds(item.id ?? '');
   };
 
   const handleDeleteConfirm = () => {
@@ -59,28 +79,48 @@ function TableContent({ head, body }: Props) {
     const USER_TOKEN = localStorage.getItem('accessToken');
     const AuthStr = 'Bearer ' + USER_TOKEN;
 
-    instance
-      .delete('admins/admins/' + id, {
-        headers: { Authorization: AuthStr },
-      })
-      .then((response) => console.log(response.data.data))
-      .catch((err) => console.log(err));
-    setOpenDeleteForm(false);
+    if (currentPage === 'Static Content') {
+      instance
+        .delete('admins/static-content/' + slug, {
+          headers: { Authorization: AuthStr },
+        })
+        .then((response) => console.log(response.data.data))
+        .catch((err) => console.log(err));
+    }
 
-    instance
-      .delete('admins/article/' + ids, {
-        headers: { Authorization: AuthStr },
-      })
-      .then((response) => console.log(response.data.data))
-      .catch((err) => console.log(err));
-    setOpenDeleteForm(false);
+    if (currentPage === 'Admin Management') {
+      instance
+        .delete('admins/admins/' + id, {
+          headers: { Authorization: AuthStr },
+        })
+        .then((response) => console.log(response.data.data))
+        .catch((err) => console.log(err));
+    }
 
-    instance
-      .delete('admins/static-content/' + slug, {
-        headers: { Authorization: AuthStr },
-      })
-      .then((response) => console.log(response.data.data))
-      .catch((err) => console.log(err));
+    if (currentPage === 'Article' || currentPage === 'PD Session') {
+      instance
+        .delete('admins/articles', {
+          headers: { Authorization: AuthStr },
+          data: {
+            ids: [ids],
+          },
+        })
+        .then((response) => console.log(response.data.data))
+        .catch((err) => console.log(err));
+    }
+
+    if (currentPage === 'Category') {
+      instance
+        .delete('admins/categories', {
+          headers: { Authorization: AuthStr },
+          data: {
+            ids: [ids],
+          },
+        })
+        .then((response) => console.log(response.data.data))
+        .catch((err) => console.log(err));
+    }
+
     dispatch(loadingOff());
     setOpenDeleteForm(false);
   };
@@ -273,14 +313,29 @@ function TableContent({ head, body }: Props) {
         />
       </div>
 
-      {/* <CreateStaticContent
-        isOpen={openUpdateForm}
-        setOpenUpdateForm={setOpenUpdateForm}
+      <CreateStaticContent
+        isOpen={openCreateStatic}
+        setOpenUpdateForm={setOpenCreateStatic}
         selectedRow={selectedRow}
-      /> */}
+      />
       <CreateAdminManagement
-        isOpen={openUpdateForm}
-        setOpenUpdateForm={setOpenUpdateForm}
+        isOpen={openCreateAdmin}
+        setOpenUpdateForm={setOpenCreateAdmin}
+        selectedRow={selectedRow}
+      />
+      <CreateArticle
+        isOpen={openCreateArticle}
+        setOpenUpdateForm={setOpenCreateArticle}
+        selectedRow={selectedRow}
+      />
+      <CreatePD
+        isOpen={openCreatePD}
+        setOpenUpdateForm={setOpenCreatePD}
+        selectedRow={selectedRow}
+      />
+      <CreateCategory
+        isOpen={openCreateCategory}
+        setOpenUpdateForm={setOpenCreateCategory}
         selectedRow={selectedRow}
       />
 

@@ -1,7 +1,5 @@
 import { Box, CircularProgress, Modal } from '@mui/material';
 
-Loading.propTypes = {};
-
 const style = {
   position: 'absolute',
   top: '50%',

@@ -20,9 +20,9 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
+import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreatePD.module.css';
-CreatePD.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -119,6 +119,15 @@ function CreatePD({
         console.log(error);
       });
 
+    await instance
+      .get('admins/articles/', {
+        headers: { Authorization: AuthStr },
+        params: { limit: 25, page: 1, f_type: 'pd' },
+      })
+      .then((response) => dispatch(setBody(response.data.data)))
+      .catch((err) => console.log(err));
+
+    setOpenUpdateForm(false);
     dispatch(loadingOff());
     reset();
   };
@@ -268,15 +277,6 @@ function CreatePD({
                   helperText={errors.timetoRead?.message}
                 />
               </div>
-              {/* 
-              <div className={styles.form_control}>
-                <FormLabel
-                  error={!!errors.picture}
-                  style={{ marginBottom: '6px' }}
-                >
-                  Image
-                </FormLabel>
-              </div> */}
 
               <div className={styles.form_control}>
                 <FormLabel style={{ marginBottom: '6px' }}>Content</FormLabel>

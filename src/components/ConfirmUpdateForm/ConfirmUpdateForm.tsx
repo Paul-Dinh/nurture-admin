@@ -1,8 +1,6 @@
 import { Box, Button, Modal } from '@mui/material';
 import styles from './ConfirmUpdateForm.module.css';
 
-ConfirmUpdateForm.propTypes = {};
-
 function ConfirmUpdateForm({
   isOpen,
   setOpenConfirmUpdateForm,

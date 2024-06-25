@@ -23,10 +23,9 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
+import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateAdminManagement.module.css';
-
-CreateAdminManagement.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -85,7 +84,7 @@ function CreateAdminManagement({
   useEffect(() => {
     if (selectedRow) {
       reset(selectedRow);
-      setTitle(selectedRow.title); // Set the form values to the existing data
+      setTitle(selectedRow.title);
     }
   }, [selectedRow, reset]);
 
@@ -108,6 +107,14 @@ function CreateAdminManagement({
       .catch(function (error) {
         console.log(error);
       });
+
+    await instance
+      .get('admins/admins', {
+        headers: { Authorization: AuthStr },
+      })
+      .then((response) => dispatch(setBody(response.data.data)))
+      .catch((err) => console.log(err));
+
     setOpenUpdateForm(false);
     dispatch(loadingOff());
     reset();

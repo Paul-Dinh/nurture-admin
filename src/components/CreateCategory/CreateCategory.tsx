@@ -19,9 +19,9 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
+import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateCategory.module.css';
-CreatePD.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -37,7 +37,7 @@ const style = {
   borderRadius: 1,
 };
 
-function CreatePD({
+function CreateCategory({
   isOpen,
   setOpenUpdateForm,
   selectedRow,
@@ -107,6 +107,15 @@ function CreatePD({
         console.log(error);
       });
 
+    await instance
+      .get('admins/categories', {
+        headers: { Authorization: AuthStr },
+        params: { limit: 25, page: 1 },
+      })
+      .then((response) => dispatch(setBody(response.data.data)))
+      .catch((err) => console.log(err));
+
+    setOpenUpdateForm(false);
     dispatch(loadingOff());
     reset();
   };
@@ -213,4 +222,4 @@ function CreatePD({
   );
 }
 
-export default CreatePD;
+export default CreateCategory;

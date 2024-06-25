@@ -20,9 +20,9 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import instance from '../../api/AxiosConfig';
+import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateArticle.module.css';
-CreateArticle.propTypes = {};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
@@ -90,7 +90,6 @@ function CreateArticle({
   const USER_TOKEN = localStorage.getItem('accessToken');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [body, setBody] = useState('');
   const AuthStr = 'Bearer ' + USER_TOKEN;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -122,6 +121,15 @@ function CreateArticle({
         console.log(error);
       });
 
+    await instance
+      .get('admins/articles/', {
+        headers: { Authorization: AuthStr },
+        params: { limit: 25, page: 1, f_type: 'article' },
+      })
+      .then((response) => dispatch(setBody(response.data.data)))
+      .catch((err) => console.log(err));
+
+    setOpenUpdateForm(false);
     dispatch(loadingOff());
     reset();
   };
