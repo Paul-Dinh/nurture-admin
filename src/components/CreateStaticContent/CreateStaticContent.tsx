@@ -26,8 +26,6 @@ import { setBody } from '../../features/body/bodySlice';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './CreateStaticContent.module.css';
 
-CreateStaticContent.propTypes = {};
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TableRowData = Record<string, any>;
 

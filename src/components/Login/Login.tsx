@@ -1,8 +1,6 @@
 import LoginForm from '../LoginForm/LoginForm.tsx';
 import styles from './Login.module.css';
 
-Login.propTypes = {};
-
 function Login() {
   return (
     <div className={styles.wrapper}>

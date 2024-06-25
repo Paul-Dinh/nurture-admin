@@ -29,13 +29,14 @@ import './SideBar.css';
 import { useDispatch, useSelector } from 'react-redux';
 import instance from '../../api/AxiosConfig';
 import { setBody } from '../../features/body/bodySlice';
-import { currentPage, setCurrentPageName } from '../../features/currentPage/currentPageSlice';
+import { currentPage, setCurrentPage } from '../../features/currentPage/currentPageSlice';
 import { sideBarOff, sideBarOn } from '../../features/margin/marginSlice';
 import CreateAdminManagement from '../CreateAdminManagement/CreateAdminManagement';
 import CreateArticle from '../CreateArticle/CreateArticle';
 import CreateCategory from '../CreateCategory/CreateCategory';
 import CreatePD from '../CreatePD/CreatePD';
 import CreateStaticContent from '../CreateStaticContent/CreateStaticContent';
+import { setCurrentPageName } from '../../features/currentPageName/currentPageNameSlice';
 
 const drawerWidth = 240;
 // const miniDrawerWidth = 60;
@@ -119,10 +120,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  // const navigate = useNavigate;
   const [name, setName] = useState<string>();
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const dispatch = useDispatch();
   const currentPageName = useSelector(currentPage);
 
@@ -269,7 +267,8 @@ export default function Sidebar() {
                 to={text.path}
                 onClick={() => {
                   setName(text.label);
-                  dispatch(setCurrentPageName(text.page));
+                  dispatch(setCurrentPage(text.page));
+                  dispatch(setCurrentPageName(text.label));
                   // sx={{
                   //   background:
                   // }}

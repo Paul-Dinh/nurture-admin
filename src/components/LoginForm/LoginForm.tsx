@@ -1,6 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
+  Button,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -17,8 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './LoginForm.module.css';
-
-LoginForm.propTypes = {};
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -67,8 +66,8 @@ function LoginForm() {
         console.log(error);
       });
 
-    dispatch(loadingOff());
     navigate('/static');
+    dispatch(loadingOff());
     reset();
   };
 
@@ -132,12 +131,13 @@ function LoginForm() {
           </FormHelperText>
         </FormControl>
         <div className={styles.btn}>
-          <button
+          <Button
+            variant='contained'
             type='submit'
-            className={styles.btn__login}
+            sx={{ width: '150px', height: '32px', margin: '20px 30px' }}
           >
             Login
-          </button>
+          </Button>
         </div>
       </form>
     </>
