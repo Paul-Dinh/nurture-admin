@@ -1,35 +1,30 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Backdrop,
   Box,
   Button,
+  Divider,
   Fade,
   FormControl,
-  //   FormControlLabel,
-  //   FormHelperText,
   FormLabel,
-  MenuItem,
-  Modal,
-  Select,
-  TextField,
-  //   TextareaAutosize,
-  Typography,
   IconButton,
   InputAdornment,
+  MenuItem,
+  Modal,
   OutlinedInput,
-  Divider,
+  Select,
+  TextField,
+  Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
-import styles from './CreateAdminManagement.module.css';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Loading from '../Loading/Loading';
-// import axios from 'axios';
 import instance from '../../api/AxiosConfig';
-// import { toast, ToastContainer } from 'react-toastify';
-// import Toast from '../../Toast';
+import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
+import styles from './CreateAdminManagement.module.css';
 
 CreateAdminManagement.propTypes = {};
 
@@ -59,6 +54,7 @@ function CreateAdminManagement({
   const handleClose = () => setOpenUpdateForm(false);
 
   const [title, setTitle] = useState('');
+  const dispatch = useDispatch();
 
   const schema = yup
     .object({
@@ -93,17 +89,15 @@ function CreateAdminManagement({
     }
   }, [selectedRow, reset]);
 
-  const [isLoading, setIsLoading] = useState(false);
-
   const USER_TOKEN = localStorage.getItem('accessToken');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [body, setBody] = useState('');
   const AuthStr = 'Bearer ' + USER_TOKEN;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitOnClick = async (data: any) => {
-    setIsLoading(true);
+    dispatch(loadingOn());
+
     await instance
       .post('admins/admins', data, {
         headers: { Authorization: AuthStr },
@@ -115,40 +109,9 @@ function CreateAdminManagement({
         console.log(error);
       });
 
-    setIsLoading(false);
-    console.log(data);
+    dispatch(loadingOff());
     reset();
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const onSubmit = (data: any) => {
-  //   console.log(data);
-
-  //   const updateData = {
-  //     username: data.username,
-  //     firstname: data.firstname,
-  //     lastname: data.lastname,
-  //     email: data.email,
-  //     status: data.status,
-  //     password: data.password,
-  //   };
-
-  //   const USER_TOKEN = localStorage.getItem('accessToken');
-  //   const AuthStr = 'Bearer ' + USER_TOKEN;
-
-  //   instance
-  //     .put(
-  //       'https://dev-api.nurture.vinova.sg/api/v1/admins/admins/' + selectedRow.id,
-  //       { ...updateData },
-  //       {
-  //         headers: { Authorization: AuthStr },
-  //       },
-  //     )
-  //     .then((response) => console.log(response.data.data))
-  //     .catch((err) => console.log(err));
-
-  //   setOpenUpdateForm(false);
-  //   reset();
-  // };
 
   return (
     <div>
@@ -312,8 +275,6 @@ function CreateAdminManagement({
           </Box>
         </Fade>
       </Modal>
-      <Loading open={isLoading} />
-      {/* <ToastContainer /> */}
     </div>
   );
 }
