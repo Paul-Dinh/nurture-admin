@@ -160,7 +160,7 @@ function TableContent({ head, body }: Props) {
           >
             <TableHead sx={{ height: 60 }}>
               <TableRow className={styles.table_header_row}>
-                {head.map((item) => (
+                {head.slice(0, -1).map((item) => (
                   <TableCell
                     key={item}
                     className={`${styles.table_cell} ${styles.table_cell_header} ${styles.table_header_action}`}
@@ -188,6 +188,11 @@ function TableContent({ head, body }: Props) {
                     </div>
                   </TableCell>
                 ))}
+                <TableCell
+                  className={`${styles.table_cell} ${styles.table_cell_header} ${styles.table_header_action}`}
+                >
+                  <div className={styles.table_header}>Action</div>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
