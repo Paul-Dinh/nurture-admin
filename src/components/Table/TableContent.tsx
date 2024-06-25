@@ -33,6 +33,7 @@ function TableContent({ head, body }: Props) {
   const [selectedRow, setSelectedRow] = useState({});
   const [slug, setSlug] = useState('');
   const [id, setId] = useState('');
+  const [ids, setIds] = useState('');
   const dispatch = useDispatch();
 
   const handleUpdateClick = (idx: number, item: TableRowData) => {
@@ -46,6 +47,7 @@ function TableContent({ head, body }: Props) {
     setIndex(idx);
     setSlug(item.slug);
     setId(item.id);
+    setIds(item.ids);
   };
 
   const handleDeleteConfirm = () => {
@@ -59,6 +61,14 @@ function TableContent({ head, body }: Props) {
 
     instance
       .delete('admins/admins/' + id, {
+        headers: { Authorization: AuthStr },
+      })
+      .then((response) => console.log(response.data.data))
+      .catch((err) => console.log(err));
+    setOpenDeleteForm(false);
+
+    instance
+      .delete('admins/article/' + ids, {
         headers: { Authorization: AuthStr },
       })
       .then((response) => console.log(response.data.data))

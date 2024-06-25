@@ -132,7 +132,6 @@ function CreatePD({
         })
         .then(function (response) {
           setData(response.data.data);
-          console.log(response.data.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -243,7 +242,12 @@ function CreatePD({
                   >
                     {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
                     {data.map((item: any) => (
-                      <MenuItem value={item.id}>{item.name}</MenuItem>
+                      <MenuItem
+                        key={item.id}
+                        value={item.id}
+                      >
+                        {item.name}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>

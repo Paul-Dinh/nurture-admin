@@ -108,7 +108,7 @@ function CreateAdminManagement({
       .catch(function (error) {
         console.log(error);
       });
-
+    setOpenUpdateForm(false);
     dispatch(loadingOff());
     reset();
   };
