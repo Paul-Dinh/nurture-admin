@@ -59,8 +59,9 @@ export default function FadeMenu() {
   useEffect(() => {
     async function handleFilter() {
       await instance
-        .get('admins/static-content?page=1&limit=25', {
+        .get('admins/static-content', {
           headers: { Authorization: AuthStr },
+          params: { limit: 25, page: 1 },
         })
         .then(function (response) {
           setData(response.data.data);

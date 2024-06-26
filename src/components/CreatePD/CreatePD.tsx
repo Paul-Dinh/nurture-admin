@@ -168,8 +168,9 @@ function CreatePD({
   useEffect(() => {
     async function handleCategory() {
       await instance
-        .get('admins/categories?page=1&limit=25', {
+        .get('admins/categories', {
           headers: { Authorization: AuthStr },
+          params: { limit: 25, page: 1 },
         })
         .then(function (response) {
           setData(response.data.data);
