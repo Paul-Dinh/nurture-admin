@@ -16,8 +16,7 @@ function Loading({ open }: { open: boolean }) {
     <div>
       <Modal
         open={open}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
+        disableAutoFocus={true}
       >
         <Box sx={style}>
           <CircularProgress sx={{ color: '#fff' }} />
