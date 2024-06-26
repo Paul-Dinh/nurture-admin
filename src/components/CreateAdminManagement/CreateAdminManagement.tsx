@@ -183,7 +183,6 @@ function CreateAdminManagement({
             <Divider />
             <form
               onSubmit={handleSubmit(handleSubmitOnClick)}
-              // onSubmit={handleSubmit(onSubmit)}
               className={styles.form}
             >
               <div className={styles.form_control}>

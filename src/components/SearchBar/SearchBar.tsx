@@ -1,4 +1,3 @@
-// import React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import './SearchBar.css';
 import { useRef, useState } from 'react';
@@ -32,7 +31,6 @@ function SearchBar({ onSubmit }: { onSubmit: Function }) {
           type='text'
           placeholder='Search'
           onChange={changeSearch}
-          //   onKeyDown={searchKeyDown}
           value={search}
         />
         <div className='searchIcon'>
