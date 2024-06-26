@@ -36,6 +36,7 @@ function DeleteForm({
         onClose={handleClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
+        disableAutoFocus={true}
       >
         <Box sx={style}>
           <svg
