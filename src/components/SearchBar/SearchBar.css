@@ -1,5 +1,4 @@
 .searchInput {
-  /* margin-top: 5px; */
   display: flex;
   position: relative;
 }
@@ -29,7 +28,3 @@
 .input:focus {
   border: 1px solid greenyellow;
 }
-
-/* .searchIcon svg {
-    font-size: 10px;
-} */

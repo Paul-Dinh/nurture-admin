@@ -15,26 +15,10 @@
   align-items: center;
 }
 
-/* .filter {
-  margin-left: 8px;
-  height: 40px;
-  width: 100px;
-  background-color: rgb(241, 241, 241);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: grey;
-  border: 1px solid rgb(179, 185, 196);
-  border-radius: 5px;
-  transition: border 0.25s;
-} */
-
 .filter:hover {
   border: 1px solid rgb(115, 132, 150);
 }
-/* background-color: rgb(247, 248, 249);
-color: rgb(57, 0, 153);
-border: 1px solid rgb(179, 185, 196); */
+
 .nw {
   background-color: rgb(57, 0, 153);
   display: flex;
@@ -45,6 +29,7 @@ border: 1px solid rgb(179, 185, 196); */
   align-items: center;
   color: rgb(255, 255, 255);
 }
+
 .create {
   background-color: rgb(57, 0, 153);
   color: rgb(255, 255, 255);
@@ -55,4 +40,3 @@ border: 1px solid rgb(179, 185, 196); */
   padding: 6px 16px;
   font-weight: 600;
 }
-

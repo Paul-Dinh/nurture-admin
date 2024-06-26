@@ -16,6 +16,5 @@ export const editSlice = createSlice({
 });
 
 export const { setEditOn, setEditOff } = editSlice.actions;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const edit = (state: { edit: { value: any } }) => state.edit.value;
+export const edit = (state: { edit: { value: boolean } }) => state.edit.value;
 export default editSlice.reducer;

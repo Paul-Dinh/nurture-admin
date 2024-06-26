@@ -13,6 +13,5 @@ export const bodySlice = createSlice({
 });
 
 export const { setBody } = bodySlice.actions;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const bodyValue = (state: { body: { value: any } }) => state.body.value;
 export default bodySlice.reducer;
