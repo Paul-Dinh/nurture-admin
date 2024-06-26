@@ -10,7 +10,6 @@ import {
   OutlinedInput,
   TextField,
 } from '@mui/material';
-import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -18,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { loadingOff, loadingOn } from '../../features/loader/loaderSlice';
 import styles from './LoginForm.module.css';
+import instance from '../../api/AxiosConfig';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -49,8 +49,8 @@ function LoginForm() {
   const handleSubmitOnclick = async (data: { username: string; password: string }) => {
     dispatch(loadingOn());
 
-    await axios
-      .post('https://dev-api.nurture.vinova.sg/api/v1/admins/auth/login', {
+    instance
+      .post('admins/auth/login', {
         username: data.username,
         password: data.password,
       })
