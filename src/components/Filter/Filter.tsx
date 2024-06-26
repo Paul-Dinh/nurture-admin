@@ -6,7 +6,7 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import instance from '../../api/AxiosConfig';
@@ -116,6 +116,12 @@ export default function FadeMenu() {
           <FormControlLabel
             control={<Checkbox />}
             label='Title'
+          />
+          <TextField
+            id='outlined-basic'
+            label='Text'
+            variant='outlined'
+            placeholder='Enter title...'
           />
           <FormControlLabel
             control={<Checkbox />}
